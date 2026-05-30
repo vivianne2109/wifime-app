@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WifiMe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080C14;
+    --bg2:       #0D1220;
+    --bg3:       #131929;
+    --card:      #161E2E;
+    --border:    rgba(255,255,255,0.07);
+    --border2:   rgba(255,255,255,0.12);
+    --blue:      #3B82F6;
+    --blue-l:    #60A5FA;
+    --blue-d:    #1D4ED8;
+    --teal:      #14B8A6;
+    --teal-l:    #5EEAD4;
+    --green:     #22C55E;
+    --amber:     #F59E0B;
+    --red:       #EF4444;
+    --purple:    #A855F7;
+    --text:      #F1F5F9;
+    --text2:     #94A3B8;
+    --text3:     #475569;
+    --r:         16px;
+    --r-sm:      10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    overflow-x: hidden;
+  }
+
+  /* PHONE SHELL */
+  .phone {
+    width: 100%;
+    max-width: 390px;
+    min-height: 100svh;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* STATUS BAR */
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    flex-shrink: 0;
+  }
+  .status-bar .time { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text); }
+  .status-icons { display: flex; gap: 5px; align-items: center; }
+  .status-icons span { font-size: 11px; }
+
+  /* SCREENS */
+  .screen { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+  .screen.active { display: flex; }
+
+  /* SCROLL CONTENT */
+  .scroll-area { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: 80px; }
+  .scroll-area::-webkit-scrollbar { display: none; }
+
+  /* HEADER */
+  .app-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px 12px;
+    flex-shrink: 0;
+  }
+  .app-logo {
+    font-size: 20px; font-weight: 600; letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--blue-l), var(--teal-l));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .header-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--card); border: 0.5px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; cursor: pointer;
+  }
+  .back-btn {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 14px; color: var(--blue-l); cursor: pointer;
+    padding: 4px 0;
+  }
+  .back-btn svg { width: 16px; height: 16px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 22px; font-weight: 600; letter-spacing: -0.5px;
+    padding: 8px 20px 4px;
+  }
+  .section-sub {
+    font-size: 13px; color: var(--text2); padding: 0 20px 16px;
+  }
+
+  /* ── TELA 1: DESCOBERTA ─────────────────────────────── */
+  .radar-container {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 20px 20px 8px; position: relative;
+  }
+  .radar-wrap {
+    position: relative; width: 220px; height: 220px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .radar-ring {
+    position: absolute; border-radius: 50%;
+    border: 1px solid rgba(59,130,246,0.15);
+    animation: radar-pulse 3s ease-out infinite;
+  }
+  .radar-ring:nth-child(1) { width: 220px; height: 220px; animation-delay: 0s; }
+  .radar-ring:nth-child(2) { width: 160px; height: 160px; animation-delay: 0.6s; }
+  .radar-ring:nth-child(3) { width: 100px; height: 100px; animation-delay: 1.2s; }
+
+  @keyframes radar-pulse {
+    0%   { opacity: 0.6; transform: scale(0.85); }
+    50%  { opacity: 0.3; }
+    100% { opacity: 0; transform: scale(1.1); }
+  }
+
+  .radar-center {
+    width: 56px; height: 56px; border-radius: 50%; z-index: 2;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 32px rgba(59,130,246,0.4);
+    font-size: 22px;
+  }
+
+  /* Host dots on radar */
+  .host-dot {
+    position: absolute; z-index: 3; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    animation: dot-appear 0.5s ease-out forwards;
+    opacity: 0;
+  }
+  @keyframes dot-appear {
+    from { opacity: 0; transform: scale(0.5); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .host-dot-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--card); border: 2px solid var(--blue);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; box-shadow: 0 0 12px rgba(59,130,246,0.3);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .host-dot:active .host-dot-circle { transform: scale(0.9); box-shadow: 0 0 20px rgba(59,130,246,0.5); }
+  .host-dot-name { font-size: 9px; color: var(--text2); font-weight: 500; white-space: nowrap; }
+  .host-dot-signal { font-size: 8px; color: var(--teal-l); }
+
+  .scan-status {
+    font-size: 12px; color: var(--text3); margin-top: 8px;
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'DM Mono', monospace;
+  }
+  .scan-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: blink 1s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+  /* Host cards */
+  .host-list { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
+  .host-card {
+    background: var(--card); border: 0.5px solid var(--border2);
+    border-radius: var(--r); padding: 14px 16px;
+    display: flex; align-items: center; gap: 14px;
+    cursor: pointer; transition: background 0.15s, border-color 0.15s;
+    animation: slide-up 0.4s ease-out forwards; opacity: 0;
+  }
+  .host-card:nth-child(1) { animation-delay: 0.1s; }
+  .host-card:nth-child(2) { animation-delay: 0.25s; }
+  .host-card:nth-child(3) { animation-delay: 0.4s; }
+  .host-card:active { background: var(--bg3); border-color: var(--blue); }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .host-avatar {
+    width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 600;
+  }
+  .host-info { flex: 1; min-width: 0; }
+  .host-name { font-size: 15px; font-weight: 500; }
+  .host-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .host-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .host-price { font-size: 14px; font-weight: 600; color: var(--teal-l); }
+  .host-price span { font-size: 10px; font-weight: 400; color: var(--text3); }
+  .signal-bars { display: flex; gap: 2px; align-items: flex-end; }
+  .signal-bars div { width: 4px; border-radius: 2px; background: var(--border2); }
+  .signal-bars div.on { background: var(--green); }
+  .signal-bars div:nth-child(1) { height: 6px; }
+  .signal-bars div:nth-child(2) { height: 10px; }
+  .signal-bars div:nth-child(3) { height: 14px; }
+  .signal-bars div:nth-child(4) { height: 18px; }
+
+  /* ── TELA 2: CONECTANDO ──────────────────────────────── */
+  .connecting-wrap {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 40px 24px;
+    gap: 0;
+  }
+  .conn-anim {
+    position: relative; width: 160px; height: 160px;
+    display: flex; align-items: center; justify-content: center; margin-bottom: 32px;
+  }
+  .conn-ring {
+    position: absolute; border-radius: 50%;
+    border: 1.5px solid var(--blue);
+    animation: conn-expand 1.6s ease-out infinite;
+  }
+  .conn-ring:nth-child(1) { width: 160px; height: 160px; animation-delay: 0s; }
+  .conn-ring:nth-child(2) { width: 120px; height: 120px; animation-delay: 0.4s; }
+  .conn-ring:nth-child(3) { width: 80px;  height: 80px;  animation-delay: 0.8s; }
+  @keyframes conn-expand {
+    0%   { opacity: 0.8; transform: scale(0.6); }
+    100% { opacity: 0;   transform: scale(1); }
+  }
+  .conn-icon {
+    width: 60px; height: 60px; border-radius: 50%; z-index: 2;
+    background: linear-gradient(135deg, var(--blue-d), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; box-shadow: 0 0 40px rgba(59,130,246,0.5);
+  }
+  .conn-title { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+  .conn-host  { font-size: 15px; color: var(--text2); margin-top: 6px; }
+  .conn-steps { width: 100%; margin-top: 36px; display: flex; flex-direction: column; gap: 12px; }
+  .conn-step {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px; border-radius: var(--r-sm);
+    background: var(--card); border: 0.5px solid var(--border);
+    font-size: 13px;
+  }
+  .step-icon {
+    width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 13px;
+  }
+  .step-icon.done  { background: rgba(34,197,94,0.15); }
+  .step-icon.doing { background: rgba(59,130,246,0.15); animation: spin-fade 1s linear infinite; }
+  .step-icon.wait  { background: var(--bg3); }
+  @keyframes spin-fade { 0%,100%{opacity:1} 50%{opacity:0.4} }
+  .step-label { color: var(--text); font-weight: 500; }
+  .step-sub   { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  /* ── TELA 3: SESSÃO ATIVA ───────────────────────────── */
+  .session-hero {
+    margin: 16px 20px; border-radius: var(--r);
+    background: linear-gradient(135deg, #0F1E3D, #0D2040);
+    border: 0.5px solid rgba(59,130,246,0.3);
+    padding: 20px; position: relative; overflow: hidden;
+  }
+  .session-hero::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 140px; height: 140px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(59,130,246,0.15), transparent 70%);
+  }
+  .session-label { font-size: 11px; color: var(--blue-l); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
+  .session-host-name { font-size: 20px; font-weight: 600; margin-top: 4px; }
+  .session-timer {
+    font-family: 'DM Mono', monospace; font-size: 38px; font-weight: 500;
+    color: var(--blue-l); margin-top: 12px; letter-spacing: -1px;
+  }
+  .session-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 20px; }
+  .stat-card {
+    background: var(--card); border: 0.5px solid var(--border);
+    border-radius: var(--r-sm); padding: 14px;
+  }
+  .stat-label { font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; }
+  .stat-val   { font-size: 22px; font-weight: 600; margin-top: 4px; font-family: 'DM Mono', monospace; }
+  .stat-unit  { font-size: 12px; color: var(--text2); font-weight: 400; }
+  .speed-bar-wrap { margin: 0 20px 16px; }
+  .speed-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 6px; }
+  .speed-bar-track { height: 6px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+  .speed-bar-fill  { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--blue), var(--teal)); transition: width 0.5s; }
+  .credit-bar-wrap { margin: 0 20px 20px; }
+  .credit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .credit-label { font-size: 13px; color: var(--text2); }
+  .credit-val   { font-size: 15px; font-weight: 600; color: var(--amber); font-family: 'DM Mono', monospace; }
+  .credit-track { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+  .credit-fill  { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--amber), #F97316); transition: width 0.8s; }
+
+  .end-btn {
+    margin: 0 20px; width: calc(100% - 40px);
+    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    color: var(--red); font-size: 15px; font-weight: 600;
+    padding: 16px; border-radius: var(--r); cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s;
+  }
+  .end-btn:active { background: rgba(239,68,68,0.2); }
+
+  /* ── TELA 4: HOST DASHBOARD ─────────────────────────── */
+  .host-toggle-wrap {
+    margin: 12px 20px 20px;
+    background: var(--card); border: 0.5px solid var(--border2);
+    border-radius: var(--r); padding: 18px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .host-toggle-info .label { font-size: 16px; font-weight: 600; }
+  .host-toggle-info .sub   { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .toggle-switch {
+    position: relative; width: 52px; height: 28px; cursor: pointer;
+  }
+  .toggle-switch input { display: none; }
+  .toggle-track {
+    position: absolute; inset: 0; border-radius: 14px;
+    background: var(--bg3); border: 1px solid var(--border2);
+    transition: background 0.25s;
+  }
+  .toggle-track.on { background: var(--blue); border-color: var(--blue); }
+  .toggle-knob {
+    position: absolute; top: 3px; left: 3px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--text2); transition: transform 0.25s, background 0.25s;
+  }
+  .toggle-knob.on { transform: translateX(24px); background: white; }
+
+  .host-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 0 20px 16px; }
+  .host-stat {
+    background: var(--card); border: 0.5px solid var(--border);
+    border-radius: var(--r-sm); padding: 12px 10px; text-align: center;
+  }
+  .host-stat .val  { font-size: 20px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .host-stat .lbl  { font-size: 10px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  .earnings-card {
+    margin: 0 20px 16px; background: var(--card);
+    border: 0.5px solid rgba(20,184,166,0.3); border-radius: var(--r); padding: 18px;
+  }
+  .earnings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+  .earnings-title { font-size: 13px; color: var(--text2); font-weight: 500; }
+  .earnings-amount { font-size: 30px; font-weight: 600; color: var(--teal-l); font-family: 'DM Mono', monospace; }
+  .earnings-amount span { font-size: 14px; font-weight: 400; color: var(--text3); }
+  .withdraw-btn {
+    width: 100%; background: rgba(20,184,166,0.1); border: 1px solid rgba(20,184,166,0.3);
+    color: var(--teal-l); font-size: 14px; font-weight: 600; padding: 12px;
+    border-radius: var(--r-sm); cursor: pointer; font-family: 'DM Sans', sans-serif;
+    margin-top: 12px; transition: background 0.15s;
+  }
+  .withdraw-btn:active { background: rgba(20,184,166,0.2); }
+
+  .active-sessions { margin: 0 20px 16px; }
+  .active-sess-title { font-size: 13px; color: var(--text2); font-weight: 500; margin-bottom: 10px; }
+  .active-sess-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--card); border: 0.5px solid var(--border);
+    border-radius: var(--r-sm); padding: 12px 14px; margin-bottom: 8px;
+  }
+  .sess-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .sess-info { flex: 1; }
+  .sess-name { font-size: 14px; font-weight: 500; }
+  .sess-meta { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .sess-earning { font-size: 13px; font-weight: 600; color: var(--teal-l); font-family: 'DM Mono', monospace; }
+  .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1s infinite; flex-shrink: 0; }
+
+  /* ── TELA 5: PORTAL CATIVO ──────────────────────────── */
+  .portal-header {
+    padding: 20px 20px 16px; text-align: center;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .portal-logo { font-size: 24px; font-weight: 700; }
+  .portal-logo span { color: var(--blue-l); }
+  .portal-tagline { font-size: 12px; color: var(--text2); margin-top: 4px; }
+  .portal-body { padding: 24px 20px; }
+  .portal-plans { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .plan-card {
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: var(--r); padding: 16px; cursor: pointer;
+    display: flex; align-items: center; gap: 14px; transition: border-color 0.15s;
+  }
+  .plan-card.selected { border-color: var(--blue); background: rgba(59,130,246,0.05); }
+  .plan-icon { font-size: 24px; }
+  .plan-info { flex: 1; }
+  .plan-name  { font-size: 15px; font-weight: 600; }
+  .plan-desc  { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  .plan-price { font-size: 16px; font-weight: 700; color: var(--teal-l); }
+  .plan-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border2); flex-shrink: 0; transition: border-color 0.15s, background 0.15s; }
+  .plan-card.selected .plan-radio { border-color: var(--blue); background: var(--blue); }
+
+  .portal-field { margin-bottom: 14px; }
+  .portal-field label { font-size: 12px; color: var(--text2); font-weight: 500; display: block; margin-bottom: 6px; }
+  .portal-field input {
+    width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--text); font-size: 15px; padding: 13px 14px; border-radius: var(--r-sm);
+    font-family: 'DM Sans', sans-serif; outline: none;
+    transition: border-color 0.15s;
+  }
+  .portal-field input:focus { border-color: var(--blue); }
+  .portal-field input::placeholder { color: var(--text3); }
+
+  .pay-methods { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
+  .pay-btn {
+    background: var(--card); border: 1px solid var(--border2);
+    border-radius: var(--r-sm); padding: 12px 8px; cursor: pointer;
+    text-align: center; font-size: 12px; font-weight: 500;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .pay-btn .pay-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .pay-btn:active { border-color: var(--blue); background: rgba(59,130,246,0.08); }
+  .pay-btn.apple { border-color: rgba(255,255,255,0.2); }
+
+  .connect-main-btn {
+    width: 100%; background: linear-gradient(135deg, var(--blue), var(--teal));
+    border: none; color: white; font-size: 16px; font-weight: 600;
+    padding: 17px; border-radius: var(--r); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; letter-spacing: -0.3px;
+    transition: opacity 0.15s;
+  }
+  .connect-main-btn:active { opacity: 0.85; }
+
+  /* ── TELA 6: CARTEIRA ───────────────────────────────── */
+  .wallet-hero {
+    margin: 12px 20px; background: linear-gradient(135deg, #0A1628, #0D2040);
+    border: 0.5px solid rgba(59,130,246,0.25); border-radius: var(--r); padding: 22px;
+    position: relative; overflow: hidden;
+  }
+  .wallet-hero::after {
+    content: ''; position: absolute; bottom: -30px; right: -30px;
+    width: 120px; height: 120px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(20,184,166,0.1), transparent 70%);
+  }
+  .wallet-label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
+  .wallet-amount { font-size: 40px; font-weight: 600; font-family: 'DM Mono', monospace; color: var(--teal-l); margin-top: 6px; letter-spacing: -1.5px; }
+  .wallet-amount span { font-size: 18px; }
+  .wallet-sub { font-size: 12px; color: var(--text3); margin-top: 4px; }
+  .wallet-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 20px; }
+  .wallet-action-btn {
+    background: var(--card); border: 0.5px solid var(--border2);
+    border-radius: var(--r-sm); padding: 14px; cursor: pointer;
+    text-align: center; transition: background 0.15s;
+  }
+  .wallet-action-btn:active { background: var(--bg3); }
+  .wallet-action-btn .icon { font-size: 20px; margin-bottom: 6px; }
+  .wallet-action-btn .lbl { font-size: 13px; font-weight: 500; }
+  .wallet-action-btn .sub { font-size: 11px; color: var(--text3); margin-top: 2px; }
+  .tx-list { margin: 0 20px; }
+  .tx-title { font-size: 13px; color: var(--text2); font-weight: 500; margin-bottom: 10px; }
+  .tx-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0; border-bottom: 0.5px solid var(--border);
+  }
+  .tx-icon { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+  .tx-info { flex: 1; }
+  .tx-name { font-size: 14px; font-weight: 500; }
+  .tx-date { font-size: 11px; color: var(--text3); margin-top: 1px; }
+  .tx-amount { font-size: 14px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .tx-amount.debit  { color: var(--red); }
+  .tx-amount.credit { color: var(--green); }
+
+  /* ── BOTTOM NAV ─────────────────────────────────────── */
+  .bottom-nav {
+    display: flex; padding: 10px 0 20px;
+    background: var(--bg2); border-top: 0.5px solid var(--border);
+    flex-shrink: 0; position: sticky; bottom: 0; z-index: 100;
+  }
+  .nav-item {
+    flex: 1; display: flex; flex-direction: column; align-items: center;
+    gap: 4px; cursor: pointer; padding: 6px 0;
+    transition: opacity 0.15s;
+  }
+  .nav-item:active { opacity: 0.6; }
+  .nav-icon { font-size: 22px; line-height: 1; }
+  .nav-label { font-size: 10px; color: var(--text3); font-weight: 500; }
+  .nav-item.active .nav-label { color: var(--blue-l); }
+  .nav-item.active .nav-icon  { filter: drop-shadow(0 0 4px var(--blue)); }
+
+  /* ── MODAL ─────────────────────────────────────────── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7); z-index: 200;
+    align-items: flex-end; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal-sheet {
+    background: var(--bg2); border-radius: 20px 20px 0 0;
+    border-top: 0.5px solid var(--border2); width: 100%; max-width: 390px;
+    padding: 20px 20px 36px; animation: sheet-up 0.3s ease-out;
+  }
+  @keyframes sheet-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 20px; }
+  .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .modal-sub   { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
+  .modal-btn {
+    width: 100%; padding: 16px; border: none; border-radius: var(--r);
+    font-size: 15px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif;
+    margin-bottom: 10px; transition: opacity 0.15s;
+  }
+  .modal-btn:active { opacity: 0.8; }
+  .modal-btn.primary { background: linear-gradient(135deg, var(--blue), var(--teal)); color: white; }
+  .modal-btn.secondary { background: var(--card); border: 0.5px solid var(--border2); color: var(--text); }
+
+  /* ── TOAST ─────────────────────────────────────────── */
+  .toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--card); border: 0.5px solid var(--border2); border-radius: 24px;
+    padding: 10px 20px; font-size: 13px; font-weight: 500;
+    white-space: nowrap; opacity: 0; transition: all 0.3s; z-index: 300;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* MISC */
+  .pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+  }
+  .pill.green  { background: rgba(34,197,94,0.12);  color: var(--green); }
+  .pill.blue   { background: rgba(59,130,246,0.12);  color: var(--blue-l); }
+  .pill.amber  { background: rgba(245,158,11,0.12);  color: var(--amber); }
+  .pill.red    { background: rgba(239,68,68,0.12);   color: var(--red); }
+
+  .divider { height: 0.5px; background: var(--border); margin: 0 20px 16px; }
+  .px-20 { padding: 0 20px; }
+  .mb-12 { margin-bottom: 12px; }
+</style>
+</head>
+<body>
+<div class="phone">
+
+  <!-- STATUS BAR -->
+  <div class="status-bar">
+    <span class="time" id="statusTime">09:41</span>
+    <div class="status-icons">
+      <span>📶</span><span>🔋</span>
+    </div>
+  </div>
+
+  <!-- ══ TELA 1: DESCOBERTA ══════════════════════════════ -->
+  <div class="screen active" id="screen-discover">
+    <div class="app-header">
+      <span class="app-logo">WifiMe</span>
+      <div style="display:flex;gap:8px">
+        <div class="header-icon" onclick="goTo('screen-wallet')">💳</div>
+        <div class="header-icon">⚙️</div>
+      </div>
+    </div>
+
+    <div class="scroll-area">
+      <div class="section-title">Hosts próximos</div>
+      <div class="section-sub">Detectando via Bluetooth… · <span style="color:var(--teal-l);font-weight:500">identidades protegidas por codinomes</span></div>
+
+      <!-- RADAR -->
+      <div class="radar-container">
+        <div class="radar-wrap" id="radarWrap">
+          <div class="radar-ring"></div>
+          <div class="radar-ring"></div>
+          <div class="radar-ring"></div>
+          <div class="radar-center">📡</div>
+          <!-- host dots injected by JS -->
+        </div>
+        <div class="scan-status">
+          <div class="scan-dot"></div>
+          <span id="scanLabel">Escaneando…</span>
+        </div>
+      </div>
+
+      <!-- HOST LIST -->
+      <div class="host-list" id="hostList" style="margin-top:16px"></div>
+
+      <!-- CODENAME LEGEND -->
+      <div id="codenameLegend" style="margin:16px 16px 0;background:var(--bg3);border:0.5px solid var(--border);border-radius:12px;padding:12px 14px;display:none">
+        <div style="font-size:11px;color:var(--teal-l);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">🔐 Como funcionam os codinomes</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.6">
+          Cada host recebe um <b style="color:var(--text)">lugar do mundo + iniciais</b>.<br>
+          <span style="font-family:'DM Mono',monospace;color:var(--teal-l)">Ana Paula Silva → Kyoto APS</span><br>
+          <span style="font-family:'DM Mono',monospace;color:var(--teal-l)">João Ferraz → Cairo JF0</span><br>
+          Identidade real protegida. Sempre.
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav">
+      <div class="nav-item active" onclick="goTo('screen-discover')">
+        <div class="nav-icon">📡</div><div class="nav-label">Descobrir</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-host')">
+        <div class="nav-icon">📤</div><div class="nav-label">Ser host</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-wallet')">
+        <div class="nav-icon">💳</div><div class="nav-label">Carteira</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-portal')">
+        <div class="nav-icon">🚨</div><div class="nav-label">Emergência</div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ══ TELA 2: CONECTANDO ══════════════════════════════ -->
+  <div class="screen" id="screen-connecting">
+    <div class="app-header">
+      <div class="back-btn" onclick="goTo('screen-discover')">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
+        Voltar
+      </div>
+    </div>
+    <div class="connecting-wrap">
+      <div class="conn-anim">
+        <div class="conn-ring"></div>
+        <div class="conn-ring"></div>
+        <div class="conn-ring"></div>
+        <div class="conn-icon">🔗</div>
+      </div>
+      <div class="conn-title">Conectando…</div>
+      <div class="conn-host" id="connHostLabel">ao host selecionado</div>
+      <div class="conn-steps" id="connSteps">
+        <div class="conn-step">
+          <div class="step-icon doing">🔵</div>
+          <div><div class="step-label">Autenticando identidade</div><div class="step-sub">verificando chave local…</div></div>
+        </div>
+        <div class="conn-step">
+          <div class="step-icon wait">⚪</div>
+          <div><div class="step-label">Estabelecendo túnel</div><div class="step-sub">aguardando…</div></div>
+        </div>
+        <div class="conn-step">
+          <div class="step-icon wait">⚪</div>
+          <div><div class="step-label">Liberando acesso</div><div class="step-sub">aguardando…</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TELA 3: SESSÃO ATIVA ════════════════════════════ -->
+  <div class="screen" id="screen-session">
+    <div class="app-header">
+      <span class="app-logo">WifiMe</span>
+      <span class="pill green"><span>●</span> Conectado</span>
+    </div>
+    <div class="scroll-area">
+      <div class="session-hero">
+        <div class="session-label">Sessão ativa com</div>
+        <div class="session-host-name" id="sessHostName">Host</div>
+        <div class="session-timer" id="sessTimer">00:00</div>
+      </div>
+      <div class="session-stats">
+        <div class="stat-card">
+          <div class="stat-label">Download</div>
+          <div class="stat-val" id="sessDown">0<span class="stat-unit"> MB/s</span></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Dados usados</div>
+          <div class="stat-val" id="sessMB">0<span class="stat-unit"> MB</span></div>
+        </div>
+      </div>
+      <div class="speed-bar-wrap">
+        <div class="speed-bar-label"><span>Velocidade</span><span id="speedPct">0%</span></div>
+        <div class="speed-bar-track"><div class="speed-bar-fill" id="speedBar" style="width:0%"></div></div>
+      </div>
+      <div class="credit-bar-wrap">
+        <div class="credit-row">
+          <span class="credit-label">Créditos restantes</span>
+          <span class="credit-val" id="sessCredits">R$ 10,00</span>
+        </div>
+        <div class="credit-track"><div class="credit-fill" id="creditBar" style="width:100%"></div></div>
+      </div>
+      <button class="end-btn" onclick="endSession()">Encerrar sessão</button>
+    </div>
+  </div>
+
+  <!-- ══ TELA 4: HOST DASHBOARD ══════════════════════════ -->
+  <div class="screen" id="screen-host">
+    <div class="app-header">
+      <span class="app-logo">WifiMe</span>
+      <span class="pill blue" id="hostStatusPill">● Offline</span>
+    </div>
+    <div class="scroll-area">
+      <div class="host-toggle-wrap">
+        <div class="host-toggle-info">
+          <div class="label" id="hostToggleLabel">Modo host desligado</div>
+          <div class="sub" id="hostToggleSub">Ligue para começar a ganhar</div>
+        </div>
+        <div class="toggle-switch" onclick="toggleHost()">
+          <div class="toggle-track" id="toggleTrack"></div>
+          <div class="toggle-knob" id="toggleKnob"></div>
+        </div>
+      </div>
+
+      <div class="host-stats">
+        <div class="host-stat">
+          <div class="val" id="hostSessions">0</div>
+          <div class="lbl">Sessões hoje</div>
+        </div>
+        <div class="host-stat">
+          <div class="val" id="hostUsers">0</div>
+          <div class="lbl">Usuários</div>
+        </div>
+        <div class="host-stat">
+          <div class="val" id="hostRating">4.9</div>
+          <div class="lbl">Avaliação</div>
+        </div>
+      </div>
+
+      <div class="earnings-card">
+        <div class="earnings-header">
+          <div class="earnings-title">Ganhos acumulados</div>
+          <span class="pill teal" style="background:rgba(20,184,166,0.1);color:var(--teal-l);padding:3px 8px;border-radius:20px;font-size:11px">Este mês</span>
+        </div>
+        <div class="earnings-amount">R$ <span id="hostEarnings">0,00</span></div>
+        <button class="withdraw-btn" onclick="showToast('💸 Saque via Pix solicitado!')">Sacar via Pix</button>
+      </div>
+
+      <div class="active-sessions" id="hostActiveSessions" style="display:none">
+        <div class="active-sess-title">Usuários conectados agora</div>
+        <div id="sessListHost"></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="px-20 mb-12">
+        <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:10px">Configurações da sessão</div>
+        <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--r-sm);overflow:hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:0.5px solid var(--border)">
+            <div><div style="font-size:14px;font-weight:500">Limite de banda</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Por usuário</div></div>
+            <div style="font-size:14px;color:var(--blue-l);font-weight:600">5 MB/s</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:0.5px solid var(--border)">
+            <div><div style="font-size:14px;font-weight:500">Sessão máxima</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Por usuário</div></div>
+            <div style="font-size:14px;color:var(--blue-l);font-weight:600">30 min</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px">
+            <div><div style="font-size:14px;font-weight:500">Usuários simultâneos</div></div>
+            <div style="font-size:14px;color:var(--blue-l);font-weight:600">3 máx</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <div class="nav-item" onclick="goTo('screen-discover')">
+        <div class="nav-icon">📡</div><div class="nav-label">Descobrir</div>
+      </div>
+      <div class="nav-item active" onclick="goTo('screen-host')">
+        <div class="nav-icon">📤</div><div class="nav-label">Ser host</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-wallet')">
+        <div class="nav-icon">💳</div><div class="nav-label">Carteira</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-portal')">
+        <div class="nav-icon">🚨</div><div class="nav-label">Emergência</div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ══ TELA 5: PORTAL CATIVO ═══════════════════════════ -->
+  <div class="screen" id="screen-portal">
+    <div class="portal-header">
+      <div class="portal-logo">Wifi<span>Me</span></div>
+      <div class="portal-tagline">Conecte-se em segundos — sem app necessário</div>
+    </div>
+    <div class="scroll-area">
+      <div class="portal-body">
+        <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:10px">Escolha um plano</div>
+        <div class="portal-plans">
+          <div class="plan-card selected" onclick="selectPlan(this)">
+            <div class="plan-icon">⚡</div>
+            <div class="plan-info">
+              <div class="plan-name">30 minutos</div>
+              <div class="plan-desc">Ideal para emergências</div>
+            </div>
+            <div>
+              <div class="plan-price">R$ 2,50</div>
+              <div class="plan-radio" style="margin-top:6px"></div>
+            </div>
+          </div>
+          <div class="plan-card" onclick="selectPlan(this)">
+            <div class="plan-icon">🕐</div>
+            <div class="plan-info">
+              <div class="plan-name">2 horas</div>
+              <div class="plan-desc">Para trabalho e lazer</div>
+            </div>
+            <div>
+              <div class="plan-price">R$ 7,00</div>
+              <div class="plan-radio" style="margin-top:6px"></div>
+            </div>
+          </div>
+          <div class="plan-card" onclick="selectPlan(this)">
+            <div class="plan-icon">☀️</div>
+            <div class="plan-info">
+              <div class="plan-name">Dia inteiro</div>
+              <div class="plan-desc">Até meia-noite</div>
+            </div>
+            <div>
+              <div class="plan-price">R$ 15,00</div>
+              <div class="plan-radio" style="margin-top:6px"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="portal-field">
+          <label>Seu nome (opcional)</label>
+          <input type="text" placeholder="Ex: João Silva">
+        </div>
+        <div class="portal-field">
+          <label>Telefone para recibo</label>
+          <input type="tel" placeholder="(11) 99999-9999">
+        </div>
+
+        <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:10px">Pagar com</div>
+        <div class="pay-methods">
+          <div class="pay-btn apple" onclick="payWith('Apple Pay')">
+            <span class="pay-icon"> </span>Apple Pay
+          </div>
+          <div class="pay-btn" onclick="payWith('Google Pay')">
+            <span class="pay-icon">G</span>Google Pay
+          </div>
+          <div class="pay-btn" onclick="payWith('Pix')">
+            <span class="pay-icon">⚡</span>Pix
+          </div>
+        </div>
+
+        <button class="connect-main-btn" onclick="portalConnect()">Conectar agora →</button>
+
+        <div style="text-align:center;font-size:11px;color:var(--text3);margin-top:14px">
+          Ao conectar você aceita os termos de uso do WifiMe.<br>Seus dados são protegidos pela LGPD.
+        </div>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <div class="nav-item" onclick="goTo('screen-discover')">
+        <div class="nav-icon">📡</div><div class="nav-label">Descobrir</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-host')">
+        <div class="nav-icon">📤</div><div class="nav-label">Ser host</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-wallet')">
+        <div class="nav-icon">💳</div><div class="nav-label">Carteira</div>
+      </div>
+      <div class="nav-item active" onclick="goTo('screen-portal')">
+        <div class="nav-icon">🚨</div><div class="nav-label">Emergência</div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ══ TELA 6: CARTEIRA ════════════════════════════════ -->
+  <div class="screen" id="screen-wallet">
+    <div class="app-header">
+      <span class="app-logo">WifiMe</span>
+      <div class="header-icon">➕</div>
+    </div>
+    <div class="scroll-area">
+      <div class="wallet-hero">
+        <div class="wallet-label">Saldo disponível</div>
+        <div class="wallet-amount"><span>R$ </span><span id="walletBalance">18,50</span></div>
+        <div class="wallet-sub">≈ 7 horas de conexão</div>
+      </div>
+      <div class="wallet-actions">
+        <div class="wallet-action-btn" onclick="showToast('💳 Adicionar via Pix ou cartão')">
+          <div class="icon">➕</div><div class="lbl">Adicionar</div><div class="sub">Pix ou cartão</div>
+        </div>
+        <div class="wallet-action-btn" onclick="showToast('📤 Transferência em breve')">
+          <div class="icon">📤</div><div class="lbl">Transferir</div><div class="sub">Para outro usuário</div>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="tx-list">
+        <div class="tx-title">Histórico</div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EF4444" opacity="0.8"/><circle cx="12" cy="9" r="2.8" fill="white" opacity="0.9"/></svg></div>
+          <div class="tx-info"><div class="tx-name">Sessão com Bogota CML</div><div class="tx-date">Hoje, 14:32 · 45 min</div></div>
+          <div class="tx-amount debit">−R$ 3,50</div>
+        </div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:rgba(34,197,94,0.1)">💳</div>
+          <div class="tx-info"><div class="tx-name">Recarga via Pix</div><div class="tx-date">Hoje, 11:00</div></div>
+          <div class="tx-amount credit">+R$ 20,00</div>
+        </div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EF4444" opacity="0.8"/><circle cx="12" cy="9" r="2.8" fill="white" opacity="0.9"/></svg></div>
+          <div class="tx-info"><div class="tx-name">Sessão com Fuji APS</div><div class="tx-date">Ontem, 18:15 · 20 min</div></div>
+          <div class="tx-amount debit">−R$ 1,50</div>
+        </div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="#EF4444" opacity="0.8"/><circle cx="12" cy="9" r="2.8" fill="white" opacity="0.9"/></svg></div>
+          <div class="tx-info"><div class="tx-name">Sessão emergência</div><div class="tx-date">Ontem, 09:40 · 30 min</div></div>
+          <div class="tx-amount debit">−R$ 2,50</div>
+        </div>
+        <div class="tx-item">
+          <div class="tx-icon" style="background:rgba(34,197,94,0.1)">💳</div>
+          <div class="tx-info"><div class="tx-name">Recarga via cartão</div><div class="tx-date">Dom, 10:00</div></div>
+          <div class="tx-amount credit">+R$ 10,00</div>
+        </div>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <div class="nav-item" onclick="goTo('screen-discover')">
+        <div class="nav-icon">📡</div><div class="nav-label">Descobrir</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-host')">
+        <div class="nav-icon">📤</div><div class="nav-label">Ser host</div>
+      </div>
+      <div class="nav-item active" onclick="goTo('screen-wallet')">
+        <div class="nav-icon">💳</div><div class="nav-label">Carteira</div>
+      </div>
+      <div class="nav-item" onclick="goTo('screen-portal')">
+        <div class="nav-icon">🚨</div><div class="nav-label">Emergência</div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- MODAL: confirmar conexão -->
+  <div class="modal-overlay" id="modalConnect">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title" id="modalHostName">Conectar ao host</div>
+      <div class="modal-sub" id="modalHostDetail">Sessão com débito automático de créditos</div>
+      <div style="background:var(--bg3);border-radius:var(--r-sm);padding:14px;margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:0.5px solid var(--border)">
+          <span style="color:var(--text2)">Preço</span><span style="font-weight:600" id="modalPrice">R$ 0,08/min</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:0.5px solid var(--border)">
+          <span style="color:var(--text2)">Velocidade</span><span style="font-weight:600" id="modalSpeed">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0">
+          <span style="color:var(--text2)">Seu saldo</span><span style="font-weight:600;color:var(--teal-l)">R$ 18,50</span>
+        </div>
+      </div>
+      <button class="modal-btn primary" onclick="startSession()">Conectar agora</button>
+      <button class="modal-btn secondary" onclick="closeModal()">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+</div><!-- /phone -->
+
+<script>
+// ── STATE ────────────────────────────────────────────────
+let currentHost = null;
+let sessionTimer = null;
+let sessionSeconds = 0;
+let sessionMB = 0;
+let sessionCredits = 10.0;
+let hostOn = false;
+let hostEarnings = 0;
+let hostSessions = 0;
+let hostUsers = 0;
+let hostEarnInterval = null;
+
+// ── WORLD PLACES CODENAMES ───────────────────────────────
+const PLACES = [
+  "Kyoto","Cairo","Oslo","Petra","Bruges","Fuji","Lhasa","Tikal","Crete","Andes",
+  "Louvre","Dubai","Seoul","Lagos","Lima","Hanoi","Accra","Baku","Doha","Tbilisi",
+  "Havana","Valletta","Nicosia","Reykjavik","Muscat","Luanda","Maputo","Bogota",
+  "Nairobi","Almaty","Tashkent","Astana","Yangon","Colombo","Dhaka","Katmandu",
+  "Yerevan","Beirut","Amman","Rabat","Tunis","Dakar","Abuja","Kigali","Harare",
+  "Lusaka","Nassau","Belmopan","Asuncion","Montevideo","Quito","Caracas","Manama",
+  "Geneva","Monaco","Vaduz","Andorra","Bern","Ljubljana","Zagreb","Tallinn",
+  "Vilnius","Riga","Minsk","Tirana","Skopje","Podgorica","Pristina","Saraje",
+  "Niamey","Bangui","Juba","Asmara","Djibouti","Moroni","Victoria","Maseru",
+  "Mbabane","Gaborone","Windhoek","Funafuti","Tarawa","Majuro","Palikir",
+  "Suva","Apia","Honiara","Bridgetown","Paramaribo","Cayenne","Chisinau",
+  "Maputo","Kampala","Conakry","Bissau","Freetown","Monrovia","Yamoussoukro",
+  "Porto","Lisbon","Athens","Sofia","Bucharest","Warsaw","Prague","Budapest",
+  "Vienna","Brussels","Amsterdam","Copenhagen","Stockholm","Helsinki","Dublin"
+];
+
+// ── CODENAME ENGINE ───────────────────────────────────────
+// Ana Paula Silva → APS | João Ferraz → JF0 | Maria → M00
+function getInitials(fullName) {
+  const parts = fullName.trim().split(/\s+/);
+  if (parts.length >= 3) return (parts[0][0]+parts[1][0]+parts[2][0]).toUpperCase();
+  if (parts.length === 2) return (parts[0][0]+parts[1][0]+'0').toUpperCase();
+  return (parts[0][0]+'00').toUpperCase();
+}
+function seedPlace(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
+  return PLACES[Math.abs(h) % PLACES.length];
+}
+function makeCodename(fullName) {
+  return seedPlace(fullName) + ' ' + getInitials(fullName);
+}
+
+// ── PIN SVG AVATAR ────────────────────────────────────────
+function pinSVG(color, size=22) {
+  return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="${color}" opacity="0.9"/>
+    <circle cx="12" cy="9" r="2.8" fill="white" opacity="0.95"/>
+  </svg>`;
+}
+function hostAvatar(h, size=22) {
+  return h.emoji === 'pin' ? pinSVG(h.color, size) : h.emoji;
+}
+
+// ── USER DATA (real names never shown, only codename) ─────
+const RAW_USERS = [
+  { fullName:"Carlos Mendes Lima",  emoji:"pin", color:"#1D4ED8", bg:"rgba(29,78,216,0.15)",
+    price:"R$ 0,08", speed:"12 MB/s", signal:4, dist:"8m" },
+  { fullName:"Ana Paula Santos",    emoji:"pin", color:"#0F766E", bg:"rgba(15,118,110,0.15)",
+    price:"R$ 0,05", speed:"7 MB/s",  signal:3, dist:"24m" },
+  { fullName:"Felipe Rodrigues",    emoji:"pin", color:"#7C3AED", bg:"rgba(124,58,237,0.15)",
+    price:"R$ 0,10", speed:"18 MB/s", signal:4, dist:"15m" },
+];
+const HOSTS = RAW_USERS.map((u,i) => ({
+  ...u, id:i+1, codename: makeCodename(u.fullName)
+}));
+
+// ── NAVIGATION ───────────────────────────────────────────
+function goTo(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── CLOCK ────────────────────────────────────────────────
+function updateClock() {
+  const d = new Date();
+  document.getElementById('statusTime').textContent =
+    d.getHours().toString().padStart(2,'0') + ':' +
+    d.getMinutes().toString().padStart(2,'0');
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+// ── HOSTS: populate radar + list ─────────────────────────
+function buildHosts() {
+  const radar = document.getElementById('radarWrap');
+  const list  = document.getElementById('hostList');
+
+  // dot positions on radar
+  const positions = [
+    { top:'18%', left:'22%' },
+    { top:'55%', left:'72%' },
+    { top:'22%', left:'65%' },
+  ];
+
+  HOSTS.forEach((h, i) => {
+    // radar dot
+    const dot = document.createElement('div');
+    dot.className = 'host-dot';
+    dot.style.cssText = `top:${positions[i].top};left:${positions[i].left};animation-delay:${0.4+i*0.4}s`;
+    dot.innerHTML = `
+      <div class="host-dot-circle" style="border-color:${h.color};box-shadow:0 0 14px ${h.color}66;background:${h.bg}">
+        ${pinSVG(h.color, 22)}
+      </div>
+      <div class="host-dot-name" style="font-size:9px;color:var(--text);font-weight:600;background:var(--bg2);padding:1px 5px;border-radius:6px;margin-top:2px">${h.codename}</div>
+      <div class="host-dot-signal" style="font-size:8px;color:var(--teal-l)">${h.dist}</div>`;
+    dot.onclick = () => openModal(h);
+    radar.appendChild(dot);
+
+    // list card
+    const card = document.createElement('div');
+    card.className = 'host-card';
+    const bars = [1,2,3,4].map(n =>
+      `<div class="${n <= h.signal ? 'on' : ''}"></div>`).join('');
+    card.innerHTML = `
+      <div class="host-avatar" style="background:${h.bg};color:${h.color};display:flex;align-items:center;justify-content:center">${pinSVG(h.color, 28)}</div>
+      <div class="host-info">
+        <div class="host-name">${h.codename}</div>
+        <div class="host-meta">${h.dist} · ${h.speed}</div>
+      </div>
+      <div class="host-right">
+        <div class="host-price">${h.price}<span>/min</span></div>
+        <div class="signal-bars">${bars}</div>
+      </div>`;
+    card.onclick = () => openModal(h);
+    list.appendChild(card);
+  });
+
+  // scan label update
+  setTimeout(() => {
+    document.getElementById('scanLabel').textContent = '3 hosts encontrados';
+  }, 2000);
+}
+buildHosts();
+
+// ── MODAL ────────────────────────────────────────────────
+function openModal(host) {
+  currentHost = host;
+  document.getElementById('modalHostName').textContent = 'Conectar a ' + host.codename;
+  document.getElementById('modalHostDetail').textContent =
+    host.dist + ' · ' + host.speed + ' · identidade protegida';
+  document.getElementById('modalPrice').textContent = host.price;
+  document.getElementById('modalSpeed').textContent = host.speed;
+  document.getElementById('modalConnect').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modalConnect').classList.remove('open');
+}
+document.getElementById('modalConnect').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ── CONNECT FLOW ─────────────────────────────────────────
+function startSession() {
+  closeModal();
+  document.getElementById('connHostLabel').textContent = 'ao host ' + currentHost.codename;
+  goTo('screen-connecting');
+
+  const steps = document.getElementById('connSteps').children;
+  const labels = [
+    ['✅','done','Identidade autenticada','chave local verificada'],
+    ['✅','done','Túnel estabelecido','WireGuard ativo'],
+    ['✅','done','Acesso liberado','navegando com IP WifiMe'],
+  ];
+  let i = 0;
+  const tick = () => {
+    if (i < labels.length) {
+      const [ic, cls, lb, sb] = labels[i];
+      steps[i].querySelector('.step-icon').className = `step-icon ${cls}`;
+      steps[i].querySelector('.step-icon').textContent = ic;
+      steps[i].querySelector('.step-label').textContent = lb;
+      steps[i].querySelector('.step-sub').textContent = sb;
+      if (i + 1 < labels.length) {
+        steps[i+1].querySelector('.step-icon').className = 'step-icon doing';
+        steps[i+1].querySelector('.step-icon').textContent = '🔵';
+      }
+      i++;
+      setTimeout(tick, 900);
+    } else {
+      setTimeout(activateSession, 500);
+    }
+  };
+  setTimeout(tick, 800);
+}
+
+function activateSession() {
+  document.getElementById('sessHostName').textContent = currentHost.codename;
+  sessionSeconds = 0;
+  sessionMB = 0;
+  sessionCredits = 10.0;
+  goTo('screen-session');
+
+  const speed = parseFloat(currentHost.speed);
+  sessionTimer = setInterval(() => {
+    sessionSeconds++;
+    const m = Math.floor(sessionSeconds/60).toString().padStart(2,'0');
+    const s = (sessionSeconds%60).toString().padStart(2,'0');
+    document.getElementById('sessTimer').textContent = m + ':' + s;
+
+    const spd = (speed * (0.4 + Math.random()*0.6)).toFixed(1);
+    document.getElementById('sessDown').innerHTML =
+      spd + '<span class="stat-unit"> MB/s</span>';
+
+    sessionMB += parseFloat(spd) * 0.2;
+    document.getElementById('sessMB').innerHTML =
+      sessionMB.toFixed(1) + '<span class="stat-unit"> MB</span>';
+
+    const pct = Math.min(100, (parseFloat(spd) / speed * 100));
+    document.getElementById('speedBar').style.width = pct + '%';
+    document.getElementById('speedPct').textContent = Math.round(pct) + '%';
+
+    sessionCredits = Math.max(0, sessionCredits - 0.008);
+    document.getElementById('sessCredits').textContent =
+      'R$ ' + sessionCredits.toFixed(2);
+    document.getElementById('creditBar').style.width =
+      (sessionCredits / 10 * 100) + '%';
+
+    if (sessionCredits <= 0) endSession();
+  }, 200);
+}
+
+function endSession() {
+  clearInterval(sessionTimer);
+  showToast('✅ Sessão encerrada · R$ ' + (10 - sessionCredits).toFixed(2) + ' debitados');
+  setTimeout(() => goTo('screen-discover'), 300);
+}
+
+// ── HOST TOGGLE ──────────────────────────────────────────
+function toggleHost() {
+  hostOn = !hostOn;
+  const track = document.getElementById('toggleTrack');
+  const knob  = document.getElementById('toggleKnob');
+  const pill  = document.getElementById('hostStatusPill');
+  const lbl   = document.getElementById('hostToggleLabel');
+  const sub   = document.getElementById('hostToggleSub');
+  const actSess = document.getElementById('hostActiveSessions');
+
+  if (hostOn) {
+    track.classList.add('on'); knob.classList.add('on');
+    pill.className = 'pill green'; pill.innerHTML = '● Online';
+    lbl.textContent = 'Modo host ativo';
+    sub.textContent = 'Você aparece para usuários próximos';
+    showToast('📡 Modo host ativado — você está visível!');
+
+    setTimeout(() => {
+      hostSessions = 2; hostUsers = 2;
+      document.getElementById('hostSessions').textContent = hostSessions;
+      document.getElementById('hostUsers').textContent = hostUsers;
+      actSess.style.display = 'block';
+      document.getElementById('sessListHost').innerHTML = `
+        <div class="active-sess-item">
+          <div class="sess-avatar" style="background:rgba(29,78,216,0.15)">📍</div>
+          <div class="sess-info">
+            <div class="sess-name">${makeCodename('Lucas Tavares')}</div>
+            <div class="sess-meta">12 min · 4,2 MB usados</div>
+          </div>
+          <div class="live-dot"></div>
+          <div class="sess-earning">R$ 0,96</div>
+        </div>
+        <div class="active-sess-item">
+          <div class="sess-avatar" style="background:rgba(15,118,110,0.15);display:flex;align-items:center;justify-content:center">${pinSVG('#0F766E',22)}</div>
+          <div class="sess-info">
+            <div class="sess-name">${makeCodename('Maria Ferreira')}</div>
+            <div class="sess-meta">5 min · 1,8 MB usados</div>
+          </div>
+          <div class="live-dot"></div>
+          <div class="sess-earning">R$ 0,40</div>
+        </div>`;
+    }, 1500);
+
+    hostEarnInterval = setInterval(() => {
+      hostEarnings += 0.004;
+      document.getElementById('hostEarnings').textContent =
+        hostEarnings.toFixed(2).replace('.', ',');
+    }, 100);
+
+  } else {
+    track.classList.remove('on'); knob.classList.remove('on');
+    pill.className = 'pill blue'; pill.innerHTML = '● Offline';
+    lbl.textContent = 'Modo host desligado';
+    sub.textContent = 'Ligue para começar a ganhar';
+    actSess.style.display = 'none';
+    clearInterval(hostEarnInterval);
+    showToast('🔴 Modo host desativado');
+  }
+}
+
+// ── PORTAL CATIVO ────────────────────────────────────────
+function selectPlan(el) {
+  document.querySelectorAll('.plan-card').forEach(c => {
+    c.classList.remove('selected');
+    c.querySelector('.plan-radio').style.background = '';
+    c.querySelector('.plan-radio').style.borderColor = '';
+  });
+  el.classList.add('selected');
+}
+
+function payWith(method) {
+  showToast('💳 ' + method + ' selecionado');
+}
+
+function portalConnect() {
+  showToast('⚡ Conectado! Internet liberada.');
+  setTimeout(() => goTo('screen-discover'), 1200);
+}
+
+// ── TOAST ────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+</script>
+</body>
+</html>
