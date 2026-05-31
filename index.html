@@ -116,11 +116,13 @@
     display: flex; flex-direction: column; align-items: center;
     padding: 20px 20px 8px; position: relative;
   }
+
   .radar-wrap {
     position: relative; width: 220px; height: 220px;
     display: flex; align-items: center; justify-content: center;
+    z-index: 1;
   }
-  .radar-ring {
+  .radar-ring { z-index: 1;
     position: absolute; border-radius: 50%;
     border: 1px solid rgba(59,130,246,0.15);
     animation: radar-pulse 3s ease-out infinite;
@@ -136,10 +138,9 @@
   }
 
   .radar-center {
-    width: 56px; height: 56px; border-radius: 50%; z-index: 2;
-    background: linear-gradient(135deg, var(--blue), var(--teal));
+    width: 60px; height: 60px; border-radius: 50%; z-index: 2;
+    background: transparent;
     display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 0 32px rgba(59,130,246,0.4);
     font-size: 22px;
   }
 
@@ -154,14 +155,7 @@
     from { opacity: 0; transform: scale(0.5); }
     to   { opacity: 1; transform: scale(1); }
   }
-  .host-dot-circle {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: var(--card); border: 2px solid var(--blue);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; box-shadow: 0 0 12px rgba(59,130,246,0.3);
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-  .host-dot:active .host-dot-circle { transform: scale(0.9); box-shadow: 0 0 20px rgba(59,130,246,0.5); }
+
   .host-dot-name { font-size: 9px; color: var(--text2); font-weight: 500; white-space: nowrap; }
   .host-dot-signal { font-size: 8px; color: var(--teal-l); }
 
@@ -170,8 +164,10 @@
     display: flex; align-items: center; gap: 6px;
     font-family: 'DM Mono', monospace;
   }
+
   .scan-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--teal); animation: blink 1s infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
 
   /* Host cards */
   .host-list { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
@@ -556,17 +552,20 @@
 
       <!-- RADAR -->
       <div class="radar-container">
-        <div class="radar-wrap" id="radarWrap">
+        <!-- BACKGROUND CANVAS -->
+      <canvas id="bgCanvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:240px;height:240px;pointer-events:none;z-index:0;border-radius:50%"></canvas>
+      <div class="radar-wrap" id="radarWrap">
           <div class="radar-ring"></div>
           <div class="radar-ring"></div>
           <div class="radar-ring"></div>
-          <div class="radar-center">📡</div>
+          <div class="radar-center" id="radarGlobe"></div>
           <!-- host dots injected by JS -->
         </div>
         <div class="scan-status">
           <div class="scan-dot"></div>
           <span id="scanLabel">Escaneando…</span>
         </div>
+
       </div>
 
       <!-- HOST LIST -->
@@ -952,20 +951,20 @@ let hostEarnInterval = null;
 
 // ── WORLD PLACES CODENAMES ───────────────────────────────
 const PLACES = [
-  "Kyoto","Cairo","Oslo","Petra","Bruges","Fuji","Lhasa","Tikal","Crete","Andes",
-  "Louvre","Dubai","Seoul","Lagos","Lima","Hanoi","Accra","Baku","Doha","Tbilisi",
-  "Havana","Valletta","Nicosia","Reykjavik","Muscat","Luanda","Maputo","Bogota",
-  "Nairobi","Almaty","Tashkent","Astana","Yangon","Colombo","Dhaka","Katmandu",
-  "Yerevan","Beirut","Amman","Rabat","Tunis","Dakar","Abuja","Kigali","Harare",
-  "Lusaka","Nassau","Belmopan","Asuncion","Montevideo","Quito","Caracas","Manama",
-  "Geneva","Monaco","Vaduz","Andorra","Bern","Ljubljana","Zagreb","Tallinn",
-  "Vilnius","Riga","Minsk","Tirana","Skopje","Podgorica","Pristina","Saraje",
-  "Niamey","Bangui","Juba","Asmara","Djibouti","Moroni","Victoria","Maseru",
-  "Mbabane","Gaborone","Windhoek","Funafuti","Tarawa","Majuro","Palikir",
-  "Suva","Apia","Honiara","Bridgetown","Paramaribo","Cayenne","Chisinau",
-  "Maputo","Kampala","Conakry","Bissau","Freetown","Monrovia","Yamoussoukro",
-  "Porto","Lisbon","Athens","Sofia","Bucharest","Warsaw","Prague","Budapest",
-  "Vienna","Brussels","Amsterdam","Copenhagen","Stockholm","Helsinki","Dublin"
+  "Lisboa","Paris","Tokyo","Berlin","Dubai","Sydney","Cairo","Roma","Seoul","Mumbai",
+  "Barcelona","Amsterdam","Vienna","Prague","Istanbul","Bangkok","Singapore","Oslo",
+  "Copenhagen","Stockholm","Helsinki","Dublin","Athens","Budapest","Warsaw","Zurich",
+  "Geneva","Brussels","Toronto","Chicago","Miami","Boston","Seattle","Denver","Austin",
+  "Mexico","Bogota","Lima","Santiago","Buenos Aires","Sao Paulo","Rio","Lagos","Nairobi",
+  "Johannesburg","Casablanca","Tunis","Accra","Dakar","Addis Ababa","Luanda","Maputo",
+  "Beirut","Amman","Riyadh","Tehran","Karachi","Dhaka","Colombo","Kathmandu","Yangon",
+  "Hanoi","Jakarta","Manila","Kuala Lumpur","Taipei","Hong Kong","Shanghai","Beijing",
+  "Osaka","Kyoto","Auckland","Melbourne","Brisbane","Perth","Honolulu","Vancouver",
+  "Montreal","Havana","San Juan","Kingston","Guatemala","Panama","Quito","Caracas",
+  "Montevideo","Asuncion","La Paz","Lisbon","Porto","Madrid","Sevilla","Valencia",
+  "Lyon","Marseille","Nice","Munich","Hamburg","Frankfurt","Cologne","Milan","Venice",
+  "Florence","Naples","Zurich","Bern","Bratislava","Ljubljana","Zagreb","Sarajevo",
+  "Bucharest","Sofia","Belgrade","Riga","Tallinn","Vilnius","Reykjavik","Valletta"
 ];
 
 // ── CODENAME ENGINE ───────────────────────────────────────
@@ -992,6 +991,7 @@ function pinSVG(color, size=22) {
     <circle cx="12" cy="9" r="2.8" fill="white" opacity="0.95"/>
   </svg>`;
 }
+
 function hostAvatar(h, size=22) {
   return h.emoji === 'pin' ? pinSVG(h.color, size) : h.emoji;
 }
@@ -1008,6 +1008,274 @@ const RAW_USERS = [
 const HOSTS = RAW_USERS.map((u,i) => ({
   ...u, id:i+1, codename: makeCodename(u.fullName)
 }));
+
+// ── BACKGROUND STYLES ────────────────────────────────────
+let bgAnimFrame = null;
+let currentBg = 'constellation';
+
+// Star/constellation data — fixed positions
+const STARS = Array.from({length: 60}, (_, i) => ({
+  x: (Math.sin(i * 2.39996) * 0.5 + 0.5),
+  y: (Math.cos(i * 1.61803) * 0.5 + 0.5),
+  r: 0.4 + (i % 4) * 0.3,
+  pulse: Math.random() * Math.PI * 2,
+  speed: 0.004 + Math.random() * 0.006,
+}));
+
+// Connect nearby stars as constellation lines
+const LINES = [];
+for (let i = 0; i < STARS.length; i++) {
+  for (let j = i+1; j < STARS.length; j++) {
+    const dx = STARS[i].x - STARS[j].x;
+    const dy = STARS[i].y - STARS[j].y;
+    const d = Math.sqrt(dx*dx + dy*dy);
+    if (d < 0.18) LINES.push([i, j, d]);
+  }
+}
+
+function drawConstellation(canvas, t) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const dpr = window.devicePixelRatio || 1;
+  const w = W/dpr, h = H/dpr;
+  ctx.clearRect(0, 0, W, H);
+
+  // draw connection lines first
+  LINES.forEach(([i, j, d]) => {
+    const a = STARS[i], b = STARS[j];
+    const opacity = (0.18 - d) / 0.18 * 0.25;
+    ctx.beginPath();
+    ctx.moveTo(a.x * w * dpr, a.y * h * dpr);
+    ctx.lineTo(b.x * w * dpr, b.y * h * dpr);
+    ctx.strokeStyle = `rgba(96,165,250,${opacity})`;
+    ctx.lineWidth = 0.6;
+    ctx.stroke();
+  });
+
+  // draw stars
+  STARS.forEach(s => {
+    s.pulse += s.speed;
+    const brightness = 0.3 + Math.sin(s.pulse) * 0.25;
+    const sx = s.x * w * dpr;
+    const sy = s.y * h * dpr;
+    // glow
+    const grad = ctx.createRadialGradient(sx, sy, 0, sx, sy, s.r * 4 * dpr);
+    grad.addColorStop(0, `rgba(96,165,250,${brightness * 0.6})`);
+    grad.addColorStop(1, 'rgba(96,165,250,0)');
+    ctx.beginPath();
+    ctx.arc(sx, sy, s.r * 4 * dpr, 0, Math.PI*2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+    // core dot
+    ctx.beginPath();
+    ctx.arc(sx, sy, s.r * dpr, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(186,230,253,${brightness + 0.2})`;
+    ctx.fill();
+  });
+}
+
+function drawWaves(canvas, t) {
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const dpr = window.devicePixelRatio || 1;
+  const cx = W/2, cy = H/2;
+  ctx.clearRect(0, 0, W, H);
+
+  const maxR = Math.min(W, H) * 0.48;
+  const rings = 7;
+  const colors = [
+    [59,130,246],   // blue
+    [14,165,233],   // sky
+    [20,184,166],   // teal
+    [168,85,247],   // purple
+    [59,130,246],
+    [14,165,233],
+    [20,184,166],
+  ];
+
+  for (let i = rings - 1; i >= 0; i--) {
+    const phase = (t * 0.0008 + i / rings) % 1;
+    const r = phase * maxR;
+    const opacity = (1 - phase) * 0.18;
+    const [R,G,B] = colors[i % colors.length];
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(${R},${G},${B},${opacity})`;
+    ctx.lineWidth = 1.5 * dpr;
+    ctx.stroke();
+  }
+
+  // static faint rings for depth
+  [0.25, 0.45, 0.65, 0.85].forEach((pct, i) => {
+    ctx.beginPath();
+    ctx.arc(cx, cy, maxR * pct, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(59,130,246,0.06)`;
+    ctx.lineWidth = 0.5 * dpr;
+    ctx.stroke();
+  });
+}
+
+function initBg(type) {
+  currentBg = type;
+  const canvas = document.getElementById('bgCanvas');
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const size = 240;
+  canvas.width  = size * dpr;
+  canvas.height = size * dpr;
+  if (bgAnimFrame) cancelAnimationFrame(bgAnimFrame);
+
+  function loop(t) {
+    if (currentBg === 'constellation') drawConstellation(canvas, t);
+    else drawWaves(canvas, t);
+    bgAnimFrame = requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+}
+
+function setBg(type) {
+  currentBg = type;
+  document.querySelectorAll('.bg-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + type).classList.add('active');
+}
+
+
+// ── 3D GLOBE (Canvas) ────────────────────────────────────
+function createGlobe(containerId) {
+  const size = 58;
+  const canvas = document.createElement('canvas');
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width  = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width  = size + 'px';
+  canvas.style.height = size + 'px';
+  canvas.style.borderRadius = '50%';
+  document.getElementById(containerId).appendChild(canvas);
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const cx = size/2, cy = size/2, r = size/2 - 2;
+
+  // continent outlines as lat/lon [lat, lon] pairs
+  // stored as arrays of [lat,lon] for spherical projection
+  const LAND = [
+    // North America outline
+    [[65,-140],[70,-130],[72,-120],[68,-100],[60,-90],[55,-85],[50,-80],[45,-76],[35,-76],[25,-80],[20,-87],[15,-88],[10,-83],[8,-77],[10,-75],[20,-70],[30,-65],[40,-66],[45,-62],[50,-56],[55,-50],[60,-45],[65,-45],[68,-52],[70,-60],[72,-70],[70,-80],[68,-90],[68,-100],[70,-110],[68,-120],[65,-130],[65,-140]],
+    // Greenland
+    [[60,-44],[62,-38],[66,-35],[72,-24],[76,-20],[80,-25],[82,-34],[82,-44],[80,-54],[76,-58],[70,-54],[64,-50],[60,-44]],
+    // South America
+    [[10,-62],[8,-60],[5,-52],[0,-50],[-5,-35],[-10,-37],[-15,-39],[-20,-40],[-25,-48],[-30,-51],[-35,-57],[-40,-62],[-45,-65],[-50,-68],[-55,-68],[-56,-68],[-54,-64],[-52,-58],[-45,-52],[-40,-50],[-35,-48],[-30,-50],[-25,-48],[-20,-44],[-15,-40],[-10,-38],[-5,-35],[0,-48],[5,-52],[10,-62]],
+    // Europe
+    [[36,0],[36,5],[38,10],[40,16],[38,22],[40,26],[42,28],[44,28],[46,30],[48,38],[50,36],[52,30],[54,24],[56,20],[58,12],[60,5],[58,5],[56,8],[54,10],[52,5],[50,2],[48,2],[46,0],[44,0],[40,0],[36,0]],
+    // Africa
+    [[36,0],[36,10],[32,32],[28,34],[24,37],[20,40],[15,42],[10,42],[5,40],[0,42],[-5,40],[-10,38],[-15,36],[-20,34],[-25,32],[-30,30],[-34,26],[-34,18],[-30,16],[-25,14],[-20,12],[-15,12],[-10,14],[-5,10],[0,8],[5,2],[10,-2],[14,-2],[18,12],[22,14],[26,14],[30,20],[32,26],[34,28],[36,0]],
+    // Asia
+    [[70,30],[72,40],[70,60],[68,80],[66,100],[64,120],[62,140],[60,140],[56,130],[50,120],[44,130],[38,140],[36,130],[32,120],[28,118],[24,116],[22,114],[20,110],[18,104],[14,100],[10,98],[6,100],[4,104],[0,104],[0,110],[6,116],[10,120],[14,124],[20,120],[26,118],[30,120],[36,128],[40,130],[44,132],[50,136],[54,138],[58,140],[62,142],[60,140],[56,136],[50,128],[44,128],[40,120],[36,112],[32,104],[28,98],[24,92],[20,88],[16,82],[12,78],[8,78],[4,76],[0,72],[4,66],[8,62],[12,58],[16,54],[20,52],[24,50],[28,48],[32,44],[36,38],[40,34],[44,30],[48,28],[52,28],[56,26],[60,22],[64,18],[68,22],[70,30]],
+    // Australia
+    [[-16,136],[-18,130],[-20,118],[-22,114],[-26,114],[-30,114],[-34,118],[-38,140],[-38,146],[-36,150],[-32,152],[-28,154],[-22,152],[-18,148],[-14,144],[-12,136],[-14,130],[-16,136]],
+  ];
+
+  let angle = 0;
+
+  function project(lat, lon, rot) {
+    const phi = (lat * Math.PI) / 180;
+    const lam = ((lon + rot) * Math.PI) / 180;
+    const x3 = Math.cos(phi) * Math.sin(lam);
+    const y3 = Math.sin(phi);
+    const z3 = Math.cos(phi) * Math.cos(lam);
+    if (z3 < 0) return null; // behind globe
+    const scale = r / 1;
+    return {
+      x: cx + x3 * scale,
+      y: cy - y3 * scale,
+      z: z3
+    };
+  }
+
+  function drawFrame() {
+    ctx.clearRect(0, 0, size, size);
+
+    // ocean background
+    const grad = ctx.createRadialGradient(cx-r*0.3, cy-r*0.3, 0, cx, cy, r);
+    grad.addColorStop(0, '#60A5FA');
+    grad.addColorStop(0.6, '#2563EB');
+    grad.addColorStop(1, '#1E40AF');
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // atmosphere glow
+    const atmo = ctx.createRadialGradient(cx, cy, r*0.7, cx, cy, r*1.15);
+    atmo.addColorStop(0, 'rgba(96,165,250,0)');
+    atmo.addColorStop(1, 'rgba(96,165,250,0.25)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, r*1.12, 0, Math.PI*2);
+    ctx.fillStyle = atmo;
+    ctx.fill();
+
+    // latitude/longitude grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+    ctx.lineWidth = 0.4;
+    for (let lat = -60; lat <= 60; lat += 30) {
+      ctx.beginPath();
+      let first = true;
+      for (let lon = -180; lon <= 180; lon += 3) {
+        const p = project(lat, lon, angle);
+        if (!p) { first = true; continue; }
+        if (first) { ctx.moveTo(p.x, p.y); first = false; }
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+    }
+    for (let lon = 0; lon < 360; lon += 30) {
+      ctx.beginPath();
+      let first = true;
+      for (let lat = -90; lat <= 90; lat += 3) {
+        const p = project(lat, lon, angle);
+        if (!p) { first = true; continue; }
+        if (first) { ctx.moveTo(p.x, p.y); first = false; }
+        else ctx.lineTo(p.x, p.y);
+      }
+      ctx.stroke();
+    }
+
+    // continents
+    ctx.fillStyle = 'rgba(255,255,255,0.22)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.35)';
+    ctx.lineWidth = 0.5;
+    LAND.forEach(poly => {
+      const pts = poly.map(([la,lo]) => project(la, lo, angle)).filter(Boolean);
+      if (pts.length < 3) return;
+      ctx.beginPath();
+      ctx.moveTo(pts[0].x, pts[0].y);
+      pts.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    });
+
+    // shine highlight
+    const shine = ctx.createRadialGradient(cx-r*0.35, cy-r*0.35, 0, cx-r*0.2, cy-r*0.2, r*0.6);
+    shine.addColorStop(0, 'rgba(255,255,255,0.22)');
+    shine.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.fillStyle = shine;
+    ctx.fill();
+
+    // clip to circle
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, r, 0, Math.PI*2);
+    ctx.clip();
+    ctx.restore();
+
+    angle += 0.25; // slow rotation
+    requestAnimationFrame(drawFrame);
+  }
+  drawFrame();
+}
 
 // ── NAVIGATION ───────────────────────────────────────────
 function goTo(id) {
@@ -1043,11 +1311,9 @@ function buildHosts() {
     dot.className = 'host-dot';
     dot.style.cssText = `top:${positions[i].top};left:${positions[i].left};animation-delay:${0.4+i*0.4}s`;
     dot.innerHTML = `
-      <div class="host-dot-circle" style="border-color:${h.color};box-shadow:0 0 14px ${h.color}66;background:${h.bg}">
-        ${pinSVG(h.color, 22)}
-      </div>
-      <div class="host-dot-name" style="font-size:9px;color:var(--text);font-weight:600;background:var(--bg2);padding:1px 5px;border-radius:6px;margin-top:2px">${h.codename}</div>
-      <div class="host-dot-signal" style="font-size:8px;color:var(--teal-l)">${h.dist}</div>`;
+      ${pinSVG(h.color, 28)}
+      <div style="font-size:9px;color:var(--text);font-weight:600;background:rgba(8,12,20,0.75);padding:1px 6px;border-radius:6px;margin-top:1px;white-space:nowrap">${h.codename}</div>
+      <div style="font-size:8px;color:var(--teal-l)">${h.dist}</div>`;
     dot.onclick = () => openModal(h);
     radar.appendChild(dot);
 
@@ -1076,6 +1342,8 @@ function buildHosts() {
   }, 2000);
 }
 buildHosts();
+initBg('constellation');
+createGlobe('radarGlobe');
 
 // ── MODAL ────────────────────────────────────────────────
 function openModal(host) {
