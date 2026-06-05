@@ -1,0 +1,5 @@
+node_modules/
+wifime.db
+wifime.db-shm
+wifime.db-wal
+*.db
