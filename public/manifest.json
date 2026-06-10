@@ -1,11 +1,11 @@
 {
-  "name": "WifiMe",
-  "short_name": "WifiMe",
+  "name": "HUBI",
+  "short_name": "HUBI",
   "description": "Compartilhe WiFi e ganhe dinheiro. Conecte-se em emergências.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#080C14",
-  "theme_color": "#3B82F6",
+  "background_color": "#F8FAFF",
+  "theme_color": "#6366F1",
   "orientation": "portrait",
   "categories": ["utilities", "productivity"],
   "lang": "pt-BR",
@@ -13,7 +13,6 @@
     { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
     { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
   ],
-  "shortcuts": [
-    { "name": "Descobrir hosts", "url": "/", "description": "Encontrar WiFi próximo" }
-  ]
+  "screenshots": [],
+  "shortcuts": [{ "name": "Descobrir hosts", "url": "/", "description": "Encontrar WiFi próximo" }]
 }
