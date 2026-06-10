@@ -3,35 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>WifiMe</title>
+<title>HUBI</title>
 <meta name="description" content="Compartilhe WiFi e ganhe dinheiro. Conecte-se em emergências.">
-<meta name="theme-color" content="#3B82F6">
+<meta name="theme-color" content="#6366F1">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="WifiMe">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="HUBI">
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:      #080C14;
-    --bg2:     #0D1220;
-    --bg3:     #131929;
-    --card:    #161E2E;
-    --border:  rgba(255,255,255,0.07);
-    --border2: rgba(255,255,255,0.12);
-    --blue:    #3B82F6;
-    --blue-l:  #60A5FA;
-    --blue-d:  #1D4ED8;
-    --teal:    #14B8A6;
-    --teal-l:  #5EEAD4;
-    --green:   #22C55E;
-    --amber:   #F59E0B;
-    --red:     #EF4444;
-    --purple:  #A855F7;
-    --text:    #F1F5F9;
-    --text2:   #94A3B8;
-    --text3:   #475569;
+    --bg:      #F8FAFF;
+    --bg2:     #EEF2FF;
+    --bg3:     #FFFFFF;
+    --card:    #FFFFFF;
+    --border:  rgba(99,102,241,0.1);
+    --border2: rgba(99,102,241,0.2);
+    --blue:    #6366F1;
+    --blue-l:  #818CF8;
+    --blue-d:  #4338CA;
+    --teal:    #0D9488;
+    --teal-l:  #14B8A6;
+    --green:   #16A34A;
+    --amber:   #D97706;
+    --red:     #DC2626;
+    --purple:  #9333EA;
+    --text:    #111827;
+    --text2:   #6B7280;
+    --text3:   #9CA3AF;
     --r:       16px;
     --r-sm:    10px;
   }
@@ -40,7 +40,9 @@
 
   body {
     font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
+    background: linear-gradient(135deg, #EEF2FF 0%, #F0FDF4 35%, #FFF7ED 65%, #EFF6FF 100%);
+    background-size: 400% 400%;
+    animation: aurora-shift 18s ease infinite;
     color: var(--text);
     min-height: 100vh;
     display: flex;
@@ -49,15 +51,24 @@
     overflow-x: hidden;
   }
 
+  @keyframes aurora-shift {
+    0%,100% { background-position: 0% 50%; }
+    33%      { background-position: 100% 30%; }
+    66%      { background-position: 50% 100%; }
+  }
+
   .phone {
     width: 100%;
     max-width: 390px;
     min-height: 100svh;
-    background: var(--bg);
+    background: rgba(248,250,255,0.88);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    box-shadow: 0 0 80px rgba(99,102,241,0.1);
   }
 
   .status-bar {
@@ -84,37 +95,38 @@
     padding: 16px 20px 12px; flex-shrink: 0;
   }
   .app-logo {
-    font-size: 20px; font-weight: 600; letter-spacing: -0.5px;
-    background: linear-gradient(135deg, var(--blue-l), var(--teal-l));
+    font-size: 20px; font-weight: 700; letter-spacing: -0.5px;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
   .header-icon {
     width: 36px; height: 36px; border-radius: 50%;
-    background: var(--card); border: 0.5px solid var(--border2);
+    background: var(--card); border: 1px solid var(--border2);
+    box-shadow: 0 2px 8px rgba(99,102,241,0.1);
     display: flex; align-items: center; justify-content: center;
     font-size: 16px; cursor: pointer;
   }
   .back-btn {
     display: flex; align-items: center; gap: 6px;
-    font-size: 14px; color: var(--blue-l); cursor: pointer; padding: 4px 0;
+    font-size: 14px; color: var(--blue); cursor: pointer; padding: 4px 0;
   }
   .back-btn svg { width: 16px; height: 16px; }
 
-  .section-title { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; padding: 8px 20px 4px; }
+  .section-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; padding: 8px 20px 4px; }
   .section-sub   { font-size: 13px; color: var(--text2); padding: 0 20px 16px; }
 
   /* ── SPLASH ────────────────────────────────────────────── */
   #screen-splash {
     align-items: center; justify-content: center; gap: 16px;
-    background: var(--bg);
+    background: transparent;
   }
   .splash-logo {
-    font-size: 42px; font-weight: 700; letter-spacing: -2px;
-    background: linear-gradient(135deg, var(--blue-l), var(--teal-l));
+    font-size: 52px; font-weight: 800; letter-spacing: -3px;
+    background: linear-gradient(135deg, var(--blue), var(--purple), var(--teal-l));
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
   .splash-dot {
-    width: 8px; height: 8px; border-radius: 50%; background: var(--blue-l);
+    width: 8px; height: 8px; border-radius: 50%; background: var(--blue);
     animation: blink 1s infinite;
   }
 
@@ -134,7 +146,7 @@
   }
   .onb-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 4px; }
   .onb-dot  { width: 6px; height: 6px; border-radius: 3px; background: var(--border2); transition: all 0.3s; }
-  .onb-dot.active { width: 20px; background: var(--blue-l); }
+  .onb-dot.active { width: 20px; background: var(--blue); }
 
   /* ── LOGIN / SIGNUP ────────────────────────────────────── */
   .auth-wrap {
@@ -147,42 +159,40 @@
   .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
   .field label { font-size: 12px; color: var(--text2); font-weight: 500; }
   .field input {
-    background: var(--bg3); border: 1px solid var(--border2);
+    background: var(--bg3); border: 1.5px solid var(--border2);
     color: var(--text); font-size: 15px; padding: 14px 16px;
     border-radius: var(--r-sm); font-family: 'DM Sans', sans-serif; outline: none;
-    transition: border-color 0.15s;
+    transition: border-color 0.15s; box-shadow: 0 1px 4px rgba(99,102,241,0.06);
   }
-  .field input:focus { border-color: var(--blue); }
+  .field input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
   .field input::placeholder { color: var(--text3); }
   .field .err { font-size: 12px; color: var(--red); display: none; }
   .field.has-error input { border-color: var(--red); }
   .field.has-error .err { display: block; }
 
   .btn-primary {
-    width: 100%; background: linear-gradient(135deg, var(--blue), var(--teal));
+    width: 100%; background: linear-gradient(135deg, var(--blue), var(--purple));
     border: none; color: white; font-size: 16px; font-weight: 600;
     padding: 17px; border-radius: var(--r); cursor: pointer;
     font-family: 'DM Sans', sans-serif; letter-spacing: -0.3px;
-    transition: opacity 0.15s; position: relative; overflow: hidden;
+    transition: opacity 0.15s, transform 0.1s; position: relative; overflow: hidden;
+    box-shadow: 0 4px 20px rgba(99,102,241,0.3);
   }
-  .btn-primary:active { opacity: 0.85; }
+  .btn-primary:active { opacity: 0.85; transform: scale(0.99); }
   .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-  .btn-primary.loading::after {
-    content: ''; position: absolute; inset: 0;
-    background: inherit; display: flex; align-items: center; justify-content: center;
-  }
   .btn-secondary {
-    width: 100%; background: var(--card); border: 0.5px solid var(--border2);
+    width: 100%; background: var(--card); border: 1.5px solid var(--border2);
     color: var(--text); font-size: 15px; font-weight: 500;
     padding: 16px; border-radius: var(--r); cursor: pointer;
     font-family: 'DM Sans', sans-serif; transition: background 0.15s;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.06);
   }
-  .btn-secondary:active { background: var(--bg3); }
+  .btn-secondary:active { background: var(--bg2); }
 
   .auth-switch {
     text-align: center; font-size: 14px; color: var(--text2); margin-top: 16px;
   }
-  .auth-switch a { color: var(--blue-l); cursor: pointer; font-weight: 500; text-decoration: none; }
+  .auth-switch a { color: var(--blue); cursor: pointer; font-weight: 600; text-decoration: none; }
 
   /* ── DISCOVER ──────────────────────────────────────────── */
   .radar-container {
@@ -195,14 +205,14 @@
   }
   .radar-ring {
     z-index: 1; position: absolute; border-radius: 50%;
-    border: 1px solid rgba(59,130,246,0.15);
+    border: 1px solid rgba(99,102,241,0.2);
     animation: radar-pulse 3s ease-out infinite;
   }
   .radar-ring:nth-child(1) { width: 220px; height: 220px; animation-delay: 0s; }
   .radar-ring:nth-child(2) { width: 160px; height: 160px; animation-delay: 0.6s; }
   .radar-ring:nth-child(3) { width: 100px; height: 100px; animation-delay: 1.2s; }
   @keyframes radar-pulse {
-    0%  { opacity:0.6; transform:scale(0.85); }
+    0%  { opacity:0.7; transform:scale(0.85); }
     50% { opacity:0.3; }
     100%{ opacity:0;   transform:scale(1.1);  }
   }
@@ -226,27 +236,28 @@
 
   .host-list { padding: 0 16px; display: flex; flex-direction: column; gap: 10px; }
   .host-card {
-    background: var(--card); border: 0.5px solid var(--border2);
+    background: var(--card); border: 1px solid var(--border);
     border-radius: var(--r); padding: 14px 16px;
     display: flex; align-items: center; gap: 14px;
-    cursor: pointer; transition: background 0.15s, border-color 0.15s;
+    cursor: pointer; transition: all 0.15s;
     animation: slide-up 0.4s ease-out forwards; opacity: 0;
+    box-shadow: 0 2px 16px rgba(99,102,241,0.07);
   }
   .host-card:nth-child(1) { animation-delay: 0.1s; }
   .host-card:nth-child(2) { animation-delay: 0.25s; }
   .host-card:nth-child(3) { animation-delay: 0.4s; }
   .host-card:nth-child(4) { animation-delay: 0.55s; }
-  .host-card:active { background: var(--bg3); border-color: var(--blue); }
+  .host-card:active { background: var(--bg2); border-color: var(--blue); transform: scale(0.99); }
   @keyframes slide-up { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
   .host-avatar {
     width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
   }
   .host-info { flex: 1; min-width: 0; }
-  .host-name { font-size: 15px; font-weight: 500; }
+  .host-name { font-size: 15px; font-weight: 600; }
   .host-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
   .host-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-  .host-price { font-size: 14px; font-weight: 600; color: var(--teal-l); }
+  .host-price { font-size: 14px; font-weight: 700; color: var(--teal); }
   .host-price span { font-size: 10px; font-weight: 400; color: var(--text3); }
   .signal-bars { display: flex; gap: 2px; align-items: flex-end; }
   .signal-bars div { width: 4px; border-radius: 2px; background: var(--border2); }
@@ -284,23 +295,24 @@
     width: 60px; height: 60px; border-radius: 50%; z-index: 2;
     background: linear-gradient(135deg, var(--blue-d), var(--blue));
     display: flex; align-items: center; justify-content: center;
-    font-size: 26px; box-shadow: 0 0 40px rgba(59,130,246,0.5);
+    font-size: 26px; box-shadow: 0 0 40px rgba(99,102,241,0.4);
   }
-  .conn-title { font-size: 22px; font-weight: 600; letter-spacing: -0.5px; }
+  .conn-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
   .conn-host  { font-size: 15px; color: var(--text2); margin-top: 6px; }
   .conn-steps { width: 100%; margin-top: 36px; display: flex; flex-direction: column; gap: 12px; }
   .conn-step {
     display: flex; align-items: center; gap: 12px;
     padding: 12px 16px; border-radius: var(--r-sm);
-    background: var(--card); border: 0.5px solid var(--border); font-size: 13px;
+    background: var(--card); border: 1px solid var(--border); font-size: 13px;
+    box-shadow: 0 1px 6px rgba(99,102,241,0.06);
   }
   .step-icon {
     width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center; font-size: 13px;
   }
-  .step-icon.done  { background: rgba(34,197,94,0.15); }
-  .step-icon.doing { background: rgba(59,130,246,0.15); animation: spin-fade 1s linear infinite; }
-  .step-icon.wait  { background: var(--bg3); }
+  .step-icon.done  { background: rgba(22,163,74,0.12); }
+  .step-icon.doing { background: rgba(99,102,241,0.12); animation: spin-fade 1s linear infinite; }
+  .step-icon.wait  { background: var(--bg2); }
   @keyframes spin-fade { 0%,100%{opacity:1} 50%{opacity:0.4} }
   .step-label { color: var(--text); font-weight: 500; }
   .step-sub   { font-size: 11px; color: var(--text3); margin-top: 1px; }
@@ -308,52 +320,55 @@
   /* ── SESSION ───────────────────────────────────────────── */
   .session-hero {
     margin: 16px 20px; border-radius: var(--r);
-    background: linear-gradient(135deg, #0F1E3D, #0D2040);
-    border: 0.5px solid rgba(59,130,246,0.3);
+    background: linear-gradient(135deg, #EEF2FF, #F5F3FF);
+    border: 1px solid rgba(99,102,241,0.2);
     padding: 20px; position: relative; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(99,102,241,0.1);
   }
   .session-hero::before {
     content:''; position:absolute; top:-40px; right:-40px;
     width:140px; height:140px; border-radius:50%;
-    background: radial-gradient(circle, rgba(59,130,246,0.15), transparent 70%);
+    background: radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%);
   }
-  .session-label { font-size: 11px; color: var(--blue-l); font-weight: 500; letter-spacing: 0.5px; text-transform: uppercase; }
-  .session-host-name { font-size: 20px; font-weight: 600; margin-top: 4px; }
+  .session-label { font-size: 11px; color: var(--blue); font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+  .session-host-name { font-size: 20px; font-weight: 700; margin-top: 4px; }
   .session-timer {
     font-family: 'DM Mono', monospace; font-size: 38px; font-weight: 500;
-    color: var(--blue-l); margin-top: 12px; letter-spacing: -1px;
+    color: var(--blue); margin-top: 12px; letter-spacing: -1px;
   }
   .session-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 20px; }
   .stat-card {
-    background: var(--card); border: 0.5px solid var(--border); border-radius: var(--r-sm); padding: 14px;
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--r-sm); padding: 14px;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.06);
   }
   .stat-label { font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; }
-  .stat-val   { font-size: 22px; font-weight: 600; margin-top: 4px; font-family: 'DM Mono', monospace; }
+  .stat-val   { font-size: 22px; font-weight: 700; margin-top: 4px; font-family: 'DM Mono', monospace; }
   .stat-unit  { font-size: 12px; color: var(--text2); font-weight: 400; }
   .speed-bar-wrap { margin: 0 20px 16px; }
   .speed-bar-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 6px; }
-  .speed-bar-track { height: 6px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
-  .speed-bar-fill  { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--blue), var(--teal)); transition: width 0.5s; }
+  .speed-bar-track { height: 6px; background: var(--bg2); border-radius: 4px; overflow: hidden; }
+  .speed-bar-fill  { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--blue), var(--purple)); transition: width 0.5s; }
   .credit-bar-wrap { margin: 0 20px 20px; }
   .credit-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
   .credit-label { font-size: 13px; color: var(--text2); }
-  .credit-val   { font-size: 15px; font-weight: 600; color: var(--amber); font-family: 'DM Mono', monospace; }
-  .credit-track { height: 8px; background: var(--bg3); border-radius: 4px; overflow: hidden; }
+  .credit-val   { font-size: 15px; font-weight: 700; color: var(--amber); font-family: 'DM Mono', monospace; }
+  .credit-track { height: 8px; background: var(--bg2); border-radius: 4px; overflow: hidden; }
   .credit-fill  { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--amber), #F97316); transition: width 0.8s; }
   .end-btn {
     margin: 0 20px; width: calc(100% - 40px);
-    background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+    background: rgba(220,38,38,0.08); border: 1.5px solid rgba(220,38,38,0.25);
     color: var(--red); font-size: 15px; font-weight: 600;
     padding: 16px; border-radius: var(--r); cursor: pointer;
     font-family: 'DM Sans', sans-serif; transition: background 0.15s;
   }
-  .end-btn:active { background: rgba(239,68,68,0.2); }
+  .end-btn:active { background: rgba(220,38,38,0.15); }
 
   /* ── HOST DASHBOARD ────────────────────────────────────── */
   .host-toggle-wrap {
-    margin: 12px 20px 20px; background: var(--card); border: 0.5px solid var(--border2);
+    margin: 12px 20px 20px; background: var(--card); border: 1px solid var(--border2);
     border-radius: var(--r); padding: 18px;
     display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 12px rgba(99,102,241,0.08);
   }
   .host-toggle-info .label { font-size: 16px; font-weight: 600; }
   .host-toggle-info .sub   { font-size: 12px; color: var(--text2); margin-top: 2px; }
@@ -361,77 +376,81 @@
   .toggle-switch input { display: none; }
   .toggle-track {
     position: absolute; inset: 0; border-radius: 14px;
-    background: var(--bg3); border: 1px solid var(--border2); transition: background 0.25s;
+    background: var(--bg2); border: 1px solid var(--border2); transition: background 0.25s;
   }
   .toggle-track.on { background: var(--blue); border-color: var(--blue); }
   .toggle-knob {
     position: absolute; top: 3px; left: 3px;
     width: 22px; height: 22px; border-radius: 50%;
-    background: var(--text2); transition: transform 0.25s, background 0.25s;
+    background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    transition: transform 0.25s;
   }
-  .toggle-knob.on { transform: translateX(24px); background: white; }
+  .toggle-knob.on { transform: translateX(24px); }
   .host-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 0 20px 16px; }
   .host-stat {
-    background: var(--card); border: 0.5px solid var(--border);
+    background: var(--card); border: 1px solid var(--border);
     border-radius: var(--r-sm); padding: 12px 10px; text-align: center;
+    box-shadow: 0 1px 6px rgba(99,102,241,0.06);
   }
-  .host-stat .val { font-size: 20px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .host-stat .val { font-size: 20px; font-weight: 700; font-family: 'DM Mono', monospace; }
   .host-stat .lbl { font-size: 10px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.3px; }
   .earnings-card {
-    margin: 0 20px 16px; background: var(--card);
-    border: 0.5px solid rgba(20,184,166,0.3); border-radius: var(--r); padding: 18px;
+    margin: 0 20px 16px; background: linear-gradient(135deg, #F0FDF4, #ECFDF5);
+    border: 1px solid rgba(13,148,136,0.2); border-radius: var(--r); padding: 18px;
+    box-shadow: 0 2px 16px rgba(13,148,136,0.08);
   }
   .earnings-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .earnings-title  { font-size: 13px; color: var(--text2); font-weight: 500; }
-  .earnings-amount { font-size: 30px; font-weight: 600; color: var(--teal-l); font-family: 'DM Mono', monospace; }
+  .earnings-amount { font-size: 30px; font-weight: 700; color: var(--teal); font-family: 'DM Mono', monospace; }
   .earnings-amount span { font-size: 14px; font-weight: 400; color: var(--text3); }
   .withdraw-btn {
-    width: 100%; background: rgba(20,184,166,0.1); border: 1px solid rgba(20,184,166,0.3);
-    color: var(--teal-l); font-size: 14px; font-weight: 600; padding: 12px;
+    width: 100%; background: rgba(13,148,136,0.1); border: 1.5px solid rgba(13,148,136,0.25);
+    color: var(--teal); font-size: 14px; font-weight: 600; padding: 12px;
     border-radius: var(--r-sm); cursor: pointer; font-family: 'DM Sans', sans-serif;
     margin-top: 12px; transition: background 0.15s;
   }
-  .withdraw-btn:active { background: rgba(20,184,166,0.2); }
+  .withdraw-btn:active { background: rgba(13,148,136,0.18); }
   .active-sessions { margin: 0 20px 16px; }
   .active-sess-title { font-size: 13px; color: var(--text2); font-weight: 500; margin-bottom: 10px; }
   .active-sess-item {
     display: flex; align-items: center; gap: 12px;
-    background: var(--card); border: 0.5px solid var(--border);
+    background: var(--card); border: 1px solid var(--border);
     border-radius: var(--r-sm); padding: 12px 14px; margin-bottom: 8px;
+    box-shadow: 0 1px 6px rgba(99,102,241,0.05);
   }
   .sess-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
   .sess-info { flex: 1; }
   .sess-name { font-size: 14px; font-weight: 500; }
   .sess-meta { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .sess-earning { font-size: 13px; font-weight: 600; color: var(--teal-l); font-family: 'DM Mono', monospace; }
+  .sess-earning { font-size: 13px; font-weight: 700; color: var(--teal); font-family: 'DM Mono', monospace; }
   .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1s infinite; flex-shrink: 0; }
 
   /* ── PORTAL ────────────────────────────────────────────── */
   .portal-header {
-    padding: 20px 20px 16px; text-align: center; border-bottom: 0.5px solid var(--border);
+    padding: 20px 20px 16px; text-align: center; border-bottom: 1px solid var(--border);
   }
-  .portal-logo { font-size: 24px; font-weight: 700; }
-  .portal-logo span { color: var(--blue-l); }
+  .portal-logo { font-size: 24px; font-weight: 800; background: linear-gradient(135deg,var(--blue),var(--purple)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
   .portal-tagline { font-size: 12px; color: var(--text2); margin-top: 4px; }
   .portal-body { padding: 24px 20px; }
   .portal-plans { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
   .plan-card {
     background: var(--card); border: 1.5px solid var(--border);
     border-radius: var(--r); padding: 16px; cursor: pointer;
-    display: flex; align-items: center; gap: 14px; transition: border-color 0.15s;
+    display: flex; align-items: center; gap: 14px; transition: all 0.15s;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.06);
   }
-  .plan-card.selected { border-color: var(--blue); background: rgba(59,130,246,0.05); }
+  .plan-card.selected { border-color: var(--blue); background: rgba(99,102,241,0.05); box-shadow: 0 4px 16px rgba(99,102,241,0.12); }
   .plan-icon  { font-size: 24px; }
   .plan-info  { flex: 1; }
   .plan-name  { font-size: 15px; font-weight: 600; }
   .plan-desc  { font-size: 12px; color: var(--text2); margin-top: 2px; }
-  .plan-price { font-size: 16px; font-weight: 700; color: var(--teal-l); }
-  .plan-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border2); flex-shrink: 0; transition: border-color 0.15s, background 0.15s; }
+  .plan-price { font-size: 16px; font-weight: 700; color: var(--teal); }
+  .plan-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border2); flex-shrink: 0; transition: all 0.15s; }
   .plan-card.selected .plan-radio { border-color: var(--blue); background: var(--blue); }
   .portal-field { margin-bottom: 14px; }
   .portal-field label { font-size: 12px; color: var(--text2); font-weight: 500; display: block; margin-bottom: 6px; }
   .portal-field input {
-    width: 100%; background: var(--bg3); border: 1px solid var(--border2);
+    width: 100%; background: var(--bg3); border: 1.5px solid var(--border2);
     color: var(--text); font-size: 15px; padding: 13px 14px; border-radius: var(--r-sm);
     font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.15s;
   }
@@ -439,68 +458,71 @@
   .portal-field input::placeholder { color: var(--text3); }
   .pay-methods { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 20px; }
   .pay-btn {
-    background: var(--card); border: 1px solid var(--border2);
+    background: var(--card); border: 1.5px solid var(--border2);
     border-radius: var(--r-sm); padding: 12px 8px; cursor: pointer;
     text-align: center; font-size: 12px; font-weight: 500;
-    transition: border-color 0.15s, background 0.15s;
+    transition: all 0.15s; box-shadow: 0 1px 4px rgba(99,102,241,0.05);
   }
   .pay-btn .pay-icon { font-size: 20px; display: block; margin-bottom: 4px; }
-  .pay-btn:active { border-color: var(--blue); background: rgba(59,130,246,0.08); }
-  .pay-btn.selected { border-color: var(--blue); background: rgba(59,130,246,0.08); }
+  .pay-btn:active { border-color: var(--blue); background: rgba(99,102,241,0.06); }
+  .pay-btn.selected { border-color: var(--blue); background: rgba(99,102,241,0.06); }
 
   /* ── WALLET ─────────────────────────────────────────────── */
   .wallet-hero {
-    margin: 12px 20px; background: linear-gradient(135deg, #0A1628, #0D2040);
-    border: 0.5px solid rgba(59,130,246,0.25); border-radius: var(--r); padding: 22px;
+    margin: 12px 20px; background: linear-gradient(135deg, #EEF2FF, #F5F3FF);
+    border: 1px solid rgba(99,102,241,0.2); border-radius: var(--r); padding: 22px;
     position: relative; overflow: hidden;
+    box-shadow: 0 4px 24px rgba(99,102,241,0.1);
   }
   .wallet-hero::after {
     content:''; position:absolute; bottom:-30px; right:-30px;
     width:120px; height:120px; border-radius:50%;
-    background: radial-gradient(circle, rgba(20,184,166,0.1), transparent 70%);
+    background: radial-gradient(circle, rgba(99,102,241,0.12), transparent 70%);
   }
-  .wallet-label  { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.5px; }
-  .wallet-amount { font-size: 40px; font-weight: 600; font-family: 'DM Mono', monospace; color: var(--teal-l); margin-top: 6px; letter-spacing: -1.5px; }
+  .wallet-label  { font-size: 11px; color: var(--blue); text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+  .wallet-amount { font-size: 40px; font-weight: 700; font-family: 'DM Mono', monospace; color: var(--blue); margin-top: 6px; letter-spacing: -1.5px; }
   .wallet-amount span { font-size: 18px; }
   .wallet-sub    { font-size: 12px; color: var(--text3); margin-top: 4px; }
   .wallet-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 20px; }
   .wallet-action-btn {
-    background: var(--card); border: 0.5px solid var(--border2);
+    background: var(--card); border: 1px solid var(--border2);
     border-radius: var(--r-sm); padding: 14px; cursor: pointer;
-    text-align: center; transition: background 0.15s;
+    text-align: center; transition: all 0.15s;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.06);
   }
-  .wallet-action-btn:active { background: var(--bg3); }
+  .wallet-action-btn:active { background: var(--bg2); transform: scale(0.98); }
   .wallet-action-btn .icon { font-size: 20px; margin-bottom: 6px; }
-  .wallet-action-btn .lbl  { font-size: 13px; font-weight: 500; }
+  .wallet-action-btn .lbl  { font-size: 13px; font-weight: 600; }
   .wallet-action-btn .sub  { font-size: 11px; color: var(--text3); margin-top: 2px; }
   .tx-list  { margin: 0 20px; }
   .tx-title { font-size: 13px; color: var(--text2); font-weight: 500; margin-bottom: 10px; }
   .tx-item  {
     display: flex; align-items: center; gap: 12px;
-    padding: 12px 0; border-bottom: 0.5px solid var(--border);
+    padding: 12px 0; border-bottom: 1px solid var(--border);
   }
   .tx-icon  { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
   .tx-info  { flex: 1; }
   .tx-name  { font-size: 14px; font-weight: 500; }
   .tx-date  { font-size: 11px; color: var(--text3); margin-top: 1px; }
-  .tx-amount { font-size: 14px; font-weight: 600; font-family: 'DM Mono', monospace; }
+  .tx-amount { font-size: 14px; font-weight: 700; font-family: 'DM Mono', monospace; }
   .tx-amount.debit  { color: var(--red); }
   .tx-amount.credit { color: var(--green); }
 
   /* ── DEPOSIT MODAL ─────────────────────────────────────── */
   .deposit-amounts { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin: 16px 0; }
   .amount-chip {
-    background: var(--bg3); border: 1px solid var(--border2);
+    background: var(--bg2); border: 1.5px solid var(--border2);
     border-radius: var(--r-sm); padding: 10px 6px; text-align: center;
     font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.15s;
   }
-  .amount-chip.selected { border-color: var(--blue); background: rgba(59,130,246,0.1); color: var(--blue-l); }
+  .amount-chip.selected { border-color: var(--blue); background: rgba(99,102,241,0.1); color: var(--blue); }
   .amount-chip:active { opacity: 0.7; }
 
   /* ── BOTTOM NAV ─────────────────────────────────────────── */
   .bottom-nav {
     display: flex; padding: 10px 0 20px;
-    background: var(--bg2); border-top: 0.5px solid var(--border);
+    background: rgba(255,255,255,0.85); border-top: 1px solid var(--border);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     flex-shrink: 0; position: sticky; bottom: 0; z-index: 100;
   }
   .nav-item {
@@ -510,24 +532,26 @@
   .nav-item:active { opacity: 0.6; }
   .nav-icon  { font-size: 22px; line-height: 1; }
   .nav-label { font-size: 10px; color: var(--text3); font-weight: 500; }
-  .nav-item.active .nav-label { color: var(--blue-l); }
-  .nav-item.active .nav-icon  { filter: drop-shadow(0 0 4px var(--blue)); }
+  .nav-item.active .nav-label { color: var(--blue); font-weight: 700; }
+  .nav-item.active .nav-icon  { filter: drop-shadow(0 0 4px rgba(99,102,241,0.5)); }
 
   /* ── MODAL ──────────────────────────────────────────────── */
   .modal-overlay {
     display: none; position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7); z-index: 200;
+    background: rgba(17,24,39,0.4); z-index: 200;
     align-items: flex-end; justify-content: center;
+    backdrop-filter: blur(4px);
   }
   .modal-overlay.open { display: flex; }
   .modal-sheet {
-    background: var(--bg2); border-radius: 20px 20px 0 0;
-    border-top: 0.5px solid var(--border2); width: 100%; max-width: 390px;
+    background: rgba(255,255,255,0.97); border-radius: 20px 20px 0 0;
+    border-top: 1px solid var(--border); width: 100%; max-width: 390px;
     padding: 20px 20px 36px; animation: sheet-up 0.3s ease-out;
+    box-shadow: 0 -8px 40px rgba(99,102,241,0.12);
   }
   @keyframes sheet-up { from{transform:translateY(100%)} to{transform:translateY(0)} }
   .modal-handle { width: 36px; height: 4px; background: var(--border2); border-radius: 2px; margin: 0 auto 20px; }
-  .modal-title  { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .modal-title  { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
   .modal-sub    { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
   .modal-btn {
     width: 100%; padding: 16px; border: none; border-radius: var(--r);
@@ -536,38 +560,41 @@
   }
   .modal-btn:active { opacity: 0.8; }
   .modal-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .modal-btn.primary   { background: linear-gradient(135deg, var(--blue), var(--teal)); color: white; }
-  .modal-btn.secondary { background: var(--card); border: 0.5px solid var(--border2); color: var(--text); }
+  .modal-btn.primary   { background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; box-shadow: 0 4px 16px rgba(99,102,241,0.3); }
+  .modal-btn.secondary { background: var(--bg2); border: 1px solid var(--border2); color: var(--text); }
 
   /* ── TOAST ──────────────────────────────────────────────── */
   .toast {
     position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
-    background: var(--card); border: 0.5px solid var(--border2); border-radius: 24px;
+    background: var(--text); color: white; border-radius: 24px;
     padding: 10px 20px; font-size: 13px; font-weight: 500;
     white-space: nowrap; opacity: 0; transition: all 0.3s; z-index: 300; pointer-events: none;
+    box-shadow: 0 4px 20px rgba(17,24,39,0.2);
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
   /* MISC */
   .pill {
     display: inline-flex; align-items: center; gap: 4px;
-    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500;
+    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
   }
-  .pill.green  { background: rgba(34,197,94,0.12);  color: var(--green);  }
-  .pill.blue   { background: rgba(59,130,246,0.12);  color: var(--blue-l); }
-  .pill.amber  { background: rgba(245,158,11,0.12);  color: var(--amber);  }
-  .pill.red    { background: rgba(239,68,68,0.12);   color: var(--red);    }
+  .pill.green  { background: rgba(22,163,74,0.1);   color: var(--green);  }
+  .pill.blue   { background: rgba(99,102,241,0.1);  color: var(--blue);   }
+  .pill.amber  { background: rgba(217,119,6,0.1);   color: var(--amber);  }
+  .pill.red    { background: rgba(220,38,38,0.1);   color: var(--red);    }
 
-  .divider { height: 0.5px; background: var(--border); margin: 0 20px 16px; }
+  .divider { height: 1px; background: var(--border); margin: 0 20px 16px; }
   .px-20   { padding: 0 20px; }
   .mb-12   { margin-bottom: 12px; }
 
   /* Install Banner */
   #installBanner {
     position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-    width: 100%; max-width: 390px; background: var(--bg2);
-    border-top: 0.5px solid var(--border2); padding: 12px 20px 20px;
+    width: 100%; max-width: 390px; background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border2); padding: 12px 20px 20px;
     display: none; z-index: 400; align-items: center; gap: 12px;
+    box-shadow: 0 -4px 24px rgba(99,102,241,0.1);
   }
   #installBanner.show { display: flex; }
   #installBanner .icon { font-size: 32px; flex-shrink: 0; }
@@ -575,8 +602,8 @@
   #installBanner .info b { font-size: 14px; display: block; }
   #installBanner .info span { font-size: 12px; color: var(--text2); }
   #installBanner button { padding: 8px 16px; border-radius: 20px; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600; }
-  #installBanner .install-btn { background: var(--blue); color: white; }
-  #installBanner .dismiss-btn { background: var(--bg3); color: var(--text2); margin-left: 6px; }
+  #installBanner .install-btn { background: var(--blue); color: white; box-shadow: 0 2px 8px rgba(99,102,241,0.3); }
+  #installBanner .dismiss-btn { background: var(--bg2); color: var(--text2); margin-left: 6px; }
 </style>
 </head>
 <body>
@@ -592,8 +619,8 @@
   <div class="screen active" id="screen-splash" style="align-items:center;justify-content:center;gap:16px">
     <canvas id="splashCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"></canvas>
     <div style="position:relative;text-align:center">
-      <div class="splash-logo">WifiMe</div>
-      <div style="font-size:14px;color:var(--text2);margin-top:6px">Conecte. Compartilhe. Ganhe.</div>
+      <div class="splash-logo">HUBI</div>
+      <div style="font-size:14px;color:var(--text2);margin-top:6px;font-weight:500">Conecte. Compartilhe. Ganhe.</div>
     </div>
     <div class="splash-dot" style="position:relative"></div>
   </div>
@@ -614,7 +641,7 @@
       <div class="onb-slide">
         <div class="onb-icon">🔐</div>
         <div class="onb-title">Identidade sempre protegida</div>
-        <div class="onb-desc">Você nunca vê o nome real de ninguém. Codinomes gerados automaticamente. Privacidade total.</div>
+        <div class="onb-desc">Você nunca vê o nome real de ninguém. Codinomes de constelações gerados automaticamente.</div>
       </div>
     </div>
     <div class="onb-footer">
@@ -631,12 +658,11 @@
   <!-- ══ LOGIN ════════════════════════════════════════════ -->
   <div class="screen" id="screen-login">
     <div class="app-header" style="justify-content:center;padding-top:24px">
-      <span class="app-logo" style="font-size:28px">WifiMe</span>
+      <span class="app-logo" style="font-size:32px;font-weight:800">HUBI</span>
     </div>
     <div class="auth-wrap">
       <div class="auth-title">Bem-vindo de volta</div>
       <div class="auth-sub">Entre com seu telefone e senha</div>
-
       <div class="field" id="loginPhoneField">
         <label>Telefone</label>
         <input type="tel" id="loginPhone" placeholder="(11) 99999-9999" autocomplete="tel">
@@ -647,9 +673,7 @@
         <input type="password" id="loginPass" placeholder="••••••" autocomplete="current-password">
         <span class="err">Informe sua senha</span>
       </div>
-
       <div id="loginErr" style="font-size:13px;color:var(--red);margin-bottom:14px;display:none"></div>
-
       <button class="btn-primary" id="loginBtn" onclick="doLogin()">Entrar</button>
       <div class="auth-switch">Não tem conta? <a onclick="goTo('screen-signup')">Cadastre-se</a></div>
     </div>
@@ -665,8 +689,7 @@
     </div>
     <div class="auth-wrap">
       <div class="auth-title">Criar conta</div>
-      <div class="auth-sub">Seu codinome é gerado automaticamente</div>
-
+      <div class="auth-sub">Seu codinome estelar é gerado automaticamente</div>
       <div class="field" id="signupNameField">
         <label>Nome completo</label>
         <input type="text" id="signupName" placeholder="Ana Paula Silva" autocomplete="name">
@@ -682,15 +705,12 @@
         <input type="password" id="signupPass" placeholder="••••••" autocomplete="new-password">
         <span class="err">Senha deve ter pelo menos 6 caracteres</span>
       </div>
-
-      <div id="codenamePreview" style="display:none;background:var(--bg3);border:0.5px solid var(--border2);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:14px">
-        <div style="font-size:11px;color:var(--teal-l);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">🔐 Seu codinome</div>
-        <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:600" id="codenameText">—</div>
+      <div id="codenamePreview" style="display:none;background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border:1px solid rgba(99,102,241,0.2);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:14px">
+        <div style="font-size:11px;color:var(--blue);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">✨ Seu codinome estelar</div>
+        <div style="font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--text)" id="codenameText">—</div>
         <div style="font-size:11px;color:var(--text3);margin-top:3px">Identidade real nunca é revelada</div>
       </div>
-
       <div id="signupErr" style="font-size:13px;color:var(--red);margin-bottom:14px;display:none"></div>
-
       <button class="btn-primary" id="signupBtn" onclick="doSignup()">Criar conta</button>
       <div class="auth-switch">Já tem conta? <a onclick="goTo('screen-login')">Entrar</a></div>
     </div>
@@ -699,17 +719,15 @@
   <!-- ══ DESCOBERTA ════════════════════════════════════════ -->
   <div class="screen" id="screen-discover">
     <div class="app-header">
-      <span class="app-logo">WifiMe</span>
+      <span class="app-logo" style="font-size:24px;font-weight:800">HUBI</span>
       <div style="display:flex;gap:8px">
         <div class="header-icon" onclick="goTo('screen-wallet')">💳</div>
         <div class="header-icon" onclick="doLogout()">🚪</div>
       </div>
     </div>
-
     <div class="scroll-area">
       <div class="section-title">Hosts próximos</div>
-      <div class="section-sub">Detectando via Bluetooth… · <span style="color:var(--teal-l);font-weight:500">identidades protegidas</span></div>
-
+      <div class="section-sub">Detectando via Bluetooth… · <span style="color:var(--teal);font-weight:600">identidades protegidas</span></div>
       <div class="radar-container">
         <canvas id="bgCanvas" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:240px;height:240px;pointer-events:none;z-index:0;border-radius:50%"></canvas>
         <div class="radar-wrap" id="radarWrap">
@@ -723,10 +741,8 @@
           <span id="scanLabel">Escaneando…</span>
         </div>
       </div>
-
       <div class="host-list" id="hostList" style="margin-top:16px"></div>
     </div>
-
     <nav class="bottom-nav">
       <div class="nav-item active" onclick="navTo('screen-discover')"><div class="nav-icon">📡</div><div class="nav-label">Descobrir</div></div>
       <div class="nav-item" onclick="navTo('screen-host')"><div class="nav-icon">📤</div><div class="nav-label">Ser host</div></div>
@@ -753,18 +769,9 @@
       <div class="conn-title">Conectando…</div>
       <div class="conn-host" id="connHostLabel">ao host selecionado</div>
       <div class="conn-steps" id="connSteps">
-        <div class="conn-step">
-          <div class="step-icon doing">🔵</div>
-          <div><div class="step-label">Autenticando identidade</div><div class="step-sub">verificando chave local…</div></div>
-        </div>
-        <div class="conn-step">
-          <div class="step-icon wait">⚪</div>
-          <div><div class="step-label">Estabelecendo túnel</div><div class="step-sub">aguardando…</div></div>
-        </div>
-        <div class="conn-step">
-          <div class="step-icon wait">⚪</div>
-          <div><div class="step-label">Liberando acesso</div><div class="step-sub">aguardando…</div></div>
-        </div>
+        <div class="conn-step"><div class="step-icon doing">🔵</div><div><div class="step-label">Autenticando identidade</div><div class="step-sub">verificando chave local…</div></div></div>
+        <div class="conn-step"><div class="step-icon wait">⚪</div><div><div class="step-label">Estabelecendo túnel</div><div class="step-sub">aguardando…</div></div></div>
+        <div class="conn-step"><div class="step-icon wait">⚪</div><div><div class="step-label">Liberando acesso</div><div class="step-sub">aguardando…</div></div></div>
       </div>
     </div>
   </div>
@@ -772,7 +779,7 @@
   <!-- ══ SESSÃO ATIVA ══════════════════════════════════════ -->
   <div class="screen" id="screen-session">
     <div class="app-header">
-      <span class="app-logo">WifiMe</span>
+      <span class="app-logo" style="font-size:24px;font-weight:800">HUBI</span>
       <span class="pill green"><span>●</span> Conectado</span>
     </div>
     <div class="scroll-area">
@@ -782,24 +789,15 @@
         <div class="session-timer" id="sessTimer">00:00</div>
       </div>
       <div class="session-stats">
-        <div class="stat-card">
-          <div class="stat-label">Download</div>
-          <div class="stat-val" id="sessDown">0<span class="stat-unit"> MB/s</span></div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">Dados usados</div>
-          <div class="stat-val" id="sessMB">0<span class="stat-unit"> MB</span></div>
-        </div>
+        <div class="stat-card"><div class="stat-label">Download</div><div class="stat-val" id="sessDown">0<span class="stat-unit"> MB/s</span></div></div>
+        <div class="stat-card"><div class="stat-label">Dados usados</div><div class="stat-val" id="sessMB">0<span class="stat-unit"> MB</span></div></div>
       </div>
       <div class="speed-bar-wrap">
         <div class="speed-bar-label"><span>Velocidade</span><span id="speedPct">0%</span></div>
         <div class="speed-bar-track"><div class="speed-bar-fill" id="speedBar" style="width:0%"></div></div>
       </div>
       <div class="credit-bar-wrap">
-        <div class="credit-row">
-          <span class="credit-label">Saldo restante</span>
-          <span class="credit-val" id="sessCredits">R$ —</span>
-        </div>
+        <div class="credit-row"><span class="credit-label">Saldo restante</span><span class="credit-val" id="sessCredits">R$ —</span></div>
         <div class="credit-track"><div class="credit-fill" id="creditBar" style="width:100%"></div></div>
       </div>
       <button class="end-btn" onclick="endSession()">Encerrar sessão</button>
@@ -809,7 +807,7 @@
   <!-- ══ HOST DASHBOARD ════════════════════════════════════ -->
   <div class="screen" id="screen-host">
     <div class="app-header">
-      <span class="app-logo">WifiMe</span>
+      <span class="app-logo" style="font-size:24px;font-weight:800">HUBI</span>
       <span class="pill blue" id="hostStatusPill">● Offline</span>
     </div>
     <div class="scroll-area">
@@ -823,47 +821,42 @@
           <div class="toggle-knob" id="toggleKnob"></div>
         </div>
       </div>
-
       <div class="host-stats">
         <div class="host-stat"><div class="val" id="hostSessions">0</div><div class="lbl">Sessões</div></div>
         <div class="host-stat"><div class="val" id="hostUsers">0</div><div class="lbl">Ativos</div></div>
         <div class="host-stat"><div class="val" id="hostRating">5.0</div><div class="lbl">Avaliação</div></div>
       </div>
-
       <div class="earnings-card">
         <div class="earnings-header">
           <div class="earnings-title">Ganhos acumulados</div>
-          <span style="background:rgba(20,184,166,0.1);color:var(--teal-l);padding:3px 8px;border-radius:20px;font-size:11px">Este mês</span>
+          <span style="background:rgba(13,148,136,0.1);color:var(--teal);padding:3px 8px;border-radius:20px;font-size:11px;font-weight:600">Este mês</span>
         </div>
         <div class="earnings-amount">R$ <span id="hostEarnings">0,00</span></div>
         <button class="withdraw-btn" onclick="showToast('💸 Saque via Pix solicitado!')">Sacar via Pix</button>
       </div>
-
       <div class="active-sessions" id="hostActiveSessions" style="display:none">
         <div class="active-sess-title">Usuários conectados agora</div>
         <div id="sessListHost"></div>
       </div>
-
       <div class="divider"></div>
       <div class="px-20 mb-12">
         <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:10px">Configurações</div>
-        <div style="background:var(--card);border:0.5px solid var(--border);border-radius:var(--r-sm);overflow:hidden">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:0.5px solid var(--border)">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r-sm);overflow:hidden;box-shadow:0 2px 8px rgba(99,102,241,0.06)">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid var(--border)">
             <div><div style="font-size:14px;font-weight:500">Limite de banda</div><div style="font-size:11px;color:var(--text3);margin-top:2px">Por usuário</div></div>
-            <div style="font-size:14px;color:var(--blue-l);font-weight:600" id="hostSpeedDisplay">10 MB/s</div>
+            <div style="font-size:14px;color:var(--blue);font-weight:700" id="hostSpeedDisplay">10 MB/s</div>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:0.5px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid var(--border)">
             <div><div style="font-size:14px;font-weight:500">Preço por minuto</div></div>
-            <div style="font-size:14px;color:var(--blue-l);font-weight:600" id="hostPriceDisplay">R$ 0,08</div>
+            <div style="font-size:14px;color:var(--blue);font-weight:700" id="hostPriceDisplay">R$ 0,08</div>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;padding:14px">
             <div><div style="font-size:14px;font-weight:500">Usuários simultâneos</div></div>
-            <div style="font-size:14px;color:var(--blue-l);font-weight:600" id="hostMaxDisplay">3 máx</div>
+            <div style="font-size:14px;color:var(--blue);font-weight:700" id="hostMaxDisplay">3 máx</div>
           </div>
         </div>
       </div>
     </div>
-
     <nav class="bottom-nav">
       <div class="nav-item" onclick="navTo('screen-discover')"><div class="nav-icon">📡</div><div class="nav-label">Descobrir</div></div>
       <div class="nav-item active" onclick="navTo('screen-host')"><div class="nav-icon">📤</div><div class="nav-label">Ser host</div></div>
@@ -873,7 +866,7 @@
   </div>  <!-- ══ PORTAL CATIVO ═════════════════════════════════════ -->
   <div class="screen" id="screen-portal">
     <div class="portal-header">
-      <div class="portal-logo">Wifi<span>Me</span></div>
+      <div class="portal-logo">HUBI</div>
       <div class="portal-tagline">Conecte-se em segundos — sem app necessário</div>
     </div>
     <div class="scroll-area">
@@ -896,17 +889,14 @@
             <div><div class="plan-price">R$ 15,00</div><div class="plan-radio" style="margin-top:6px"></div></div>
           </div>
         </div>
-
         <div class="portal-field"><label>Seu nome (opcional)</label><input type="text" placeholder="Ex: João Silva"></div>
         <div class="portal-field"><label>Telefone para recibo</label><input type="tel" placeholder="(11) 99999-9999"></div>
-
         <div style="font-size:13px;color:var(--text2);font-weight:500;margin-bottom:10px">Pagar com</div>
         <div class="pay-methods">
           <div class="pay-btn" id="pay-apple" onclick="selectPayMethod('apple')"><span class="pay-icon"> </span>Apple Pay</div>
           <div class="pay-btn" id="pay-google" onclick="selectPayMethod('google')"><span class="pay-icon">G</span>Google Pay</div>
           <div class="pay-btn selected" id="pay-pix" onclick="selectPayMethod('pix')"><span class="pay-icon">⚡</span>Pix</div>
         </div>
-
         <button class="btn-primary" onclick="portalConnect()">Conectar agora →</button>
         <div style="text-align:center;font-size:11px;color:var(--text3);margin-top:14px">
           Ao conectar você aceita os termos de uso.<br>Dados protegidos pela LGPD.
@@ -924,7 +914,7 @@
   <!-- ══ CARTEIRA ══════════════════════════════════════════ -->
   <div class="screen" id="screen-wallet">
     <div class="app-header">
-      <span class="app-logo">WifiMe</span>
+      <span class="app-logo" style="font-size:24px;font-weight:800">HUBI</span>
       <div class="header-icon" onclick="openDepositModal()">➕</div>
     </div>
     <div class="scroll-area">
@@ -961,16 +951,16 @@
       <div class="modal-handle"></div>
       <div class="modal-title" id="modalHostName">Conectar ao host</div>
       <div class="modal-sub" id="modalHostDetail">Sessão com débito automático</div>
-      <div style="background:var(--bg3);border-radius:var(--r-sm);padding:14px;margin-bottom:20px">
-        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:0.5px solid var(--border)">
-          <span style="color:var(--text2)">Preço</span><span style="font-weight:600" id="modalPrice">—</span>
+      <div style="background:var(--bg2);border-radius:var(--r-sm);padding:14px;margin-bottom:20px;border:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)">
+          <span style="color:var(--text2)">Preço</span><span style="font-weight:700" id="modalPrice">—</span>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:0.5px solid var(--border)">
-          <span style="color:var(--text2)">Velocidade</span><span style="font-weight:600" id="modalSpeed">—</span>
+        <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border)">
+          <span style="color:var(--text2)">Velocidade</span><span style="font-weight:700" id="modalSpeed">—</span>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0">
           <span style="color:var(--text2)">Seu saldo</span>
-          <span style="font-weight:600;color:var(--teal-l)" id="modalBalance">R$ —</span>
+          <span style="font-weight:700;color:var(--teal)" id="modalBalance">R$ —</span>
         </div>
       </div>
       <button class="modal-btn primary" id="modalConnectBtn" onclick="startSession()">Conectar agora</button>
@@ -1008,10 +998,7 @@
   <!-- PWA Install Banner -->
   <div id="installBanner">
     <div class="icon">📲</div>
-    <div class="info">
-      <b>Instalar WifiMe</b>
-      <span>Acesse mais rápido direto da tela inicial</span>
-    </div>
+    <div class="info"><b>Instalar HUBI</b><span>Acesse mais rápido direto da tela inicial</span></div>
     <button class="install-btn" onclick="installPWA()">Instalar</button>
     <button class="dismiss-btn" onclick="dismissInstall()">✕</button>
   </div>
@@ -1019,8 +1006,7 @@
 </div><!-- /phone -->
 
 <script>
-// ── STATE ─────────────────────────────────────────────────────────────────────
-let authToken = localStorage.getItem('wifime_token');
+let authToken = localStorage.getItem('hubi_token');
 let currentUser = null;
 let currentHost = null;
 let currentSessionId = null;
@@ -1034,13 +1020,11 @@ let selectedDepAmount = 10;
 let selectedDepMethod = 'Pix';
 let deferredInstallPrompt = null;
 
-// ── CODENAME ENGINE (client-side preview) ──────────────────────────────────────
-const PLACES = ["Lisboa","Paris","Tokyo","Berlin","Dubai","Sydney","Cairo","Roma","Seoul","Mumbai","Barcelona","Amsterdam","Vienna","Prague","Istanbul","Bangkok","Singapore","Oslo","Copenhagen","Stockholm","Helsinki","Dublin","Athens","Budapest","Warsaw","Zurich","Geneva","Brussels","Toronto","Chicago","Miami","Boston","Seattle","Denver","Austin","Bogota","Lima","Santiago","Lagos","Nairobi","Beirut","Riyadh","Tehran","Karachi","Hanoi","Jakarta","Manila","Taipei","Hong Kong","Shanghai","Beijing","Osaka","Kyoto","Auckland","Melbourne","Vancouver","Montreal","Havana","Quito","Caracas","Montevideo"];
+const CONSTELLATIONS = ["Orion","Lyra","Cygnus","Aquila","Cassiopeia","Andromeda","Perseus","Draco","Gemini","Leo","Virgo","Scorpius","Aquarius","Pisces","Aries","Taurus","Cancer","Capricorn","Sagittarius","Ophiuchus","Hercules","Boötes","Corona","Libra","Lupus","Ara","Pavo","Grus","Phoenix","Tucana","Hydra","Corvus","Crater","Centaurus","Vela","Puppis","Carina","Columba","Lepus","Eridanus","Fornax","Sculptor","Cetus","Pegasus","Delphinus","Sagitta","Vulpecula","Pictor","Caelum","Horologium","Reticulum","Dorado","Volans","Musca","Crux","Lynx","Auriga","Monoceros","Serpens","Triangulum","Equuleus","Lacerta"];
 function getInitials(n){const p=n.trim().split(/\s+/);if(p.length>=3)return(p[0][0]+p[1][0]+p[2][0]).toUpperCase();if(p.length===2)return(p[0][0]+p[1][0]+'0').toUpperCase();return(p[0][0]+'00').toUpperCase();}
-function seedPlace(n){let h=0;for(let i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))|0;return PLACES[Math.abs(h)%PLACES.length];}
-function makeCodename(n){return seedPlace(n)+' '+getInitials(n);}
+function seedConstellation(n){let h=0;for(let i=0;i<n.length;i++)h=(h*31+n.charCodeAt(i))|0;return CONSTELLATIONS[Math.abs(h)%CONSTELLATIONS.length];}
+function makeCodename(n){return seedConstellation(n)+' '+getInitials(n);}
 
-// ── PIN SVG ────────────────────────────────────────────────────────────────────
 function pinSVG(color, size=22) {
   return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none">
     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" fill="${color}" opacity="0.9"/>
@@ -1048,7 +1032,6 @@ function pinSVG(color, size=22) {
   </svg>`;
 }
 
-// ── API ───────────────────────────────────────────────────────────────────────
 async function api(method, endpoint, data) {
   const opts = {
     method,
@@ -1061,66 +1044,51 @@ async function api(method, endpoint, data) {
   return json;
 }
 
-// ── AUTH ──────────────────────────────────────────────────────────────────────
 async function doLogin() {
   const phone = document.getElementById('loginPhone').value.trim();
   const pass  = document.getElementById('loginPass').value;
-
   clearFieldErr('loginPhoneField'); clearFieldErr('loginPassField');
   document.getElementById('loginErr').style.display = 'none';
-
   if (!phone) { setFieldErr('loginPhoneField'); return; }
   if (!pass)  { setFieldErr('loginPassField');  return; }
-
   const btn = document.getElementById('loginBtn');
   btn.disabled = true; btn.textContent = 'Entrando…';
-
   try {
     const { token, user } = await api('POST', '/auth/login', { phone, password: pass });
-    authToken = token;
-    currentUser = user;
-    localStorage.setItem('wifime_token', token);
+    authToken = token; currentUser = user;
+    localStorage.setItem('hubi_token', token);
     enterApp();
   } catch (e) {
     document.getElementById('loginErr').textContent = e.message;
     document.getElementById('loginErr').style.display = 'block';
-  } finally {
-    btn.disabled = false; btn.textContent = 'Entrar';
-  }
+  } finally { btn.disabled = false; btn.textContent = 'Entrar'; }
 }
 
 async function doSignup() {
   const name  = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
   const pass  = document.getElementById('signupPass').value;
-
   clearFieldErr('signupNameField'); clearFieldErr('signupPhoneField'); clearFieldErr('signupPassField');
   document.getElementById('signupErr').style.display = 'none';
-
   if (!name)       { setFieldErr('signupNameField');  return; }
   if (!phone)      { setFieldErr('signupPhoneField'); return; }
   if (pass.length < 6) { setFieldErr('signupPassField'); return; }
-
   const btn = document.getElementById('signupBtn');
   btn.disabled = true; btn.textContent = 'Criando conta…';
-
   try {
     const { token, user } = await api('POST', '/auth/signup', { name, phone, password: pass });
-    authToken = token;
-    currentUser = user;
-    localStorage.setItem('wifime_token', token);
+    authToken = token; currentUser = user;
+    localStorage.setItem('hubi_token', token);
     enterApp();
   } catch (e) {
     document.getElementById('signupErr').textContent = e.message;
     document.getElementById('signupErr').style.display = 'block';
-  } finally {
-    btn.disabled = false; btn.textContent = 'Criar conta';
-  }
+  } finally { btn.disabled = false; btn.textContent = 'Criar conta'; }
 }
 
 function doLogout() {
   authToken = null; currentUser = null;
-  localStorage.removeItem('wifime_token');
+  localStorage.removeItem('hubi_token');
   goTo('screen-login');
   document.getElementById('statusBar').style.display = 'none';
 }
@@ -1128,55 +1096,38 @@ function doLogout() {
 function setFieldErr(id)   { document.getElementById(id).classList.add('has-error'); }
 function clearFieldErr(id) { document.getElementById(id).classList.remove('has-error'); }
 
-// Live codename preview on signup
 document.getElementById('signupName').addEventListener('input', function() {
   const v = this.value.trim();
   const box = document.getElementById('codenamePreview');
-  if (v.length > 1) {
-    box.style.display = 'block';
-    document.getElementById('codenameText').textContent = makeCodename(v);
-  } else {
-    box.style.display = 'none';
-  }
+  if (v.length > 1) { box.style.display = 'block'; document.getElementById('codenameText').textContent = makeCodename(v); }
+  else { box.style.display = 'none'; }
 });
-
-// Enter key handling
 document.getElementById('loginPass').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 document.getElementById('signupPass').addEventListener('keydown', e => { if (e.key === 'Enter') doSignup(); });
 
-// ── APP INIT ──────────────────────────────────────────────────────────────────
 async function init() {
   initSplashCanvas();
   updateClock();
   setInterval(updateClock, 10000);
-
-  await new Promise(r => setTimeout(r, 1800)); // splash
-
+  await new Promise(r => setTimeout(r, 1800));
   if (authToken) {
     try {
       const { user } = await api('GET', '/auth/me');
-      currentUser = user;
-      enterApp();
-      return;
-    } catch {
-      authToken = null;
-      localStorage.removeItem('wifime_token');
-    }
+      currentUser = user; enterApp(); return;
+    } catch { authToken = null; localStorage.removeItem('hubi_token'); }
   }
-
-  const onboarded = localStorage.getItem('wifime_onboarded');
+  const onboarded = localStorage.getItem('hubi_onboarded');
   goTo(onboarded ? 'screen-login' : 'screen-onboarding');
 }
 
 function enterApp() {
-  localStorage.setItem('wifime_onboarded', '1');
+  localStorage.setItem('hubi_onboarded', '1');
   document.getElementById('statusBar').style.display = 'flex';
   navTo('screen-discover');
   loadHosts();
   syncHostStatus();
 }
 
-// ── NAVIGATION ────────────────────────────────────────────────────────────────
 function goTo(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -1195,16 +1146,12 @@ function navTo(id) {
   if (id === 'screen-host')   loadHostStats();
 }
 
-// ── ONBOARDING ────────────────────────────────────────────────────────────────
 function onbNext() {
   const slides = document.getElementById('onbSlides');
   const btn    = document.getElementById('onbNextBtn');
   onbIndex = Math.min(2, onbIndex + 1);
   slides.style.transform = `translateX(-${onbIndex * 100}%)`;
-  [0,1,2].forEach(i => {
-    const dot = document.getElementById('dot'+i);
-    dot.classList.toggle('active', i === onbIndex);
-  });
+  [0,1,2].forEach(i => document.getElementById('dot'+i).classList.toggle('active', i === onbIndex));
   if (onbIndex === 2) {
     btn.textContent = 'Começar →';
     btn.onclick = () => goTo('screen-login');
@@ -1212,32 +1159,27 @@ function onbNext() {
   }
 }
 
-// ── CLOCK ─────────────────────────────────────────────────────────────────────
 function updateClock() {
   const d = new Date();
   document.getElementById('statusTime').textContent =
     d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
 }
 
-// ── HOSTS ─────────────────────────────────────────────────────────────────────
 let loadedHosts = [];
 
 async function loadHosts() {
   document.getElementById('scanLabel').textContent = 'Escaneando…';
   document.getElementById('hostList').innerHTML = '';
   document.getElementById('radarWrap').querySelectorAll('.host-dot').forEach(d => d.remove());
-
   try {
     const { hosts } = await api('GET', '/hosts/nearby');
-    loadedHosts = hosts;
-    buildHostUI(hosts);
+    loadedHosts = hosts; buildHostUI(hosts);
   } catch {
     const demoHosts = [
-      { id:'demo1', codename:'Tokyo CML', price:'R$ 0,08', priceNum:0.08, speed:'12 MB/s', signal:4, dist:'8m', color:'#1D4ED8' },
-      { id:'demo2', codename:'Cairo APS', price:'R$ 0,05', priceNum:0.05, speed:'7 MB/s',  signal:3, dist:'24m', color:'#0F766E' },
+      { id:'demo1', codename:'Orion APS', price:'R$ 0,08', priceNum:0.08, speed:'12 MB/s', signal:4, dist:'8m', color:'#6366F1' },
+      { id:'demo2', codename:'Lyra CML', price:'R$ 0,05', priceNum:0.05, speed:'7 MB/s', signal:3, dist:'24m', color:'#0D9488' },
     ];
-    loadedHosts = demoHosts;
-    buildHostUI(demoHosts);
+    loadedHosts = demoHosts; buildHostUI(demoHosts);
   }
 }
 
@@ -1249,50 +1191,35 @@ const RADAR_POSITIONS = [
 function buildHostUI(hosts) {
   const radar = document.getElementById('radarWrap');
   const list  = document.getElementById('hostList');
-
   hosts.forEach((h, i) => {
     const pos = RADAR_POSITIONS[i % RADAR_POSITIONS.length];
     const dot = document.createElement('div');
     dot.className = 'host-dot';
     dot.style.cssText = `top:${pos.top};left:${pos.left};animation-delay:${0.4+i*0.4}s`;
-    dot.innerHTML = `
-      ${pinSVG(h.color, 28)}
-      <div style="font-size:9px;color:var(--text);font-weight:600;background:rgba(8,12,20,0.75);padding:1px 6px;border-radius:6px;margin-top:1px;white-space:nowrap">${h.codename}</div>
-      <div style="font-size:8px;color:var(--teal-l)">${h.dist}</div>`;
+    dot.innerHTML = `${pinSVG(h.color, 28)}
+      <div style="font-size:9px;color:var(--text);font-weight:600;background:rgba(255,255,255,0.85);padding:1px 6px;border-radius:6px;margin-top:1px;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,0.1)">${h.codename}</div>
+      <div style="font-size:8px;color:var(--teal);font-weight:600">${h.dist}</div>`;
     dot.onclick = () => openConnectModal(h);
     radar.appendChild(dot);
-
     const card = document.createElement('div');
     card.className = 'host-card';
     const bars = [1,2,3,4].map(n => `<div class="${n <= h.signal ? 'on' : ''}"></div>`).join('');
     card.innerHTML = `
-      <div class="host-avatar" style="background:${h.color}22">${pinSVG(h.color, 28)}</div>
-      <div class="host-info">
-        <div class="host-name">${h.codename}</div>
-        <div class="host-meta">${h.dist} · ${h.speed}</div>
-      </div>
-      <div class="host-right">
-        <div class="host-price">${h.price}<span>/min</span></div>
-        <div class="signal-bars">${bars}</div>
-      </div>`;
+      <div class="host-avatar" style="background:${h.color}18">${pinSVG(h.color, 28)}</div>
+      <div class="host-info"><div class="host-name">${h.codename}</div><div class="host-meta">${h.dist} · ${h.speed}</div></div>
+      <div class="host-right"><div class="host-price">${h.price}<span>/min</span></div><div class="signal-bars">${bars}</div></div>`;
     card.onclick = () => openConnectModal(h);
     list.appendChild(card);
   });
-
   setTimeout(() => {
     document.getElementById('scanLabel').textContent =
       hosts.length ? `${hosts.length} host${hosts.length > 1 ? 's' : ''} encontrado${hosts.length > 1 ? 's' : ''}` : 'Nenhum host próximo';
   }, 1500);
-
   if (!hosts.length) {
-    list.innerHTML = `<div class="empty-state">
-      <div class="icon">📡</div>
-      <p>Nenhum host próximo ainda.<br>Seja o primeiro — ative o modo host!</p>
-    </div>`;
+    list.innerHTML = `<div class="empty-state"><div class="icon">📡</div><p>Nenhum host próximo ainda.<br>Seja o primeiro — ative o modo host!</p></div>`;
   }
 }
 
-// ── CONNECT MODAL ─────────────────────────────────────────────────────────────
 function openConnectModal(host) {
   currentHost = host;
   document.getElementById('modalHostName').textContent = 'Conectar a ' + host.codename;
@@ -1304,43 +1231,34 @@ function openConnectModal(host) {
 }
 
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
 document.getElementById('modalConnect').addEventListener('click', function(e) { if (e.target === this) closeModal('modalConnect'); });
 document.getElementById('modalDeposit').addEventListener('click', function(e) { if (e.target === this) closeModal('modalDeposit'); });
 
-// ── SESSION ───────────────────────────────────────────────────────────────────
 async function startSession() {
   if (!currentHost) return;
   const btn = document.getElementById('modalConnectBtn');
   btn.disabled = true; btn.textContent = 'Iniciando…';
-
   try {
-    let sessionData;
     if (typeof currentHost.id === 'string' && currentHost.id.startsWith('demo')) {
       currentSessionId = 'demo';
-      sessionData = { session_id: 'demo', host: currentHost };
     } else {
-      sessionData = await api('POST', '/sessions/start', { host_id: currentHost.id });
+      const sessionData = await api('POST', '/sessions/start', { host_id: currentHost.id });
       currentSessionId = sessionData.session_id;
     }
     closeModal('modalConnect');
     runConnectingAnimation();
-  } catch (e) {
-    showToast('❌ ' + e.message);
-  } finally {
-    btn.disabled = false; btn.textContent = 'Conectar agora';
-  }
+  } catch (e) { showToast('❌ ' + e.message); }
+  finally { btn.disabled = false; btn.textContent = 'Conectar agora'; }
 }
 
 function runConnectingAnimation() {
   document.getElementById('connHostLabel').textContent = 'ao host ' + currentHost.codename;
   goTo('screen-connecting');
-
   const steps = document.getElementById('connSteps').children;
   const labels = [
     ['✅','done','Identidade autenticada','chave local verificada'],
     ['✅','done','Túnel estabelecido','WireGuard ativo'],
-    ['✅','done','Acesso liberado','navegando com IP WifiMe'],
+    ['✅','done','Acesso liberado','navegando com IP HUBI'],
   ];
   Array.from(steps).forEach((s, i) => {
     s.querySelector('.step-icon').className = 'step-icon ' + (i === 0 ? 'doing' : 'wait');
@@ -1348,7 +1266,6 @@ function runConnectingAnimation() {
     s.querySelector('.step-label').textContent = ['Autenticando identidade','Estabelecendo túnel','Liberando acesso'][i];
     s.querySelector('.step-sub').textContent = ['verificando chave local…','aguardando…','aguardando…'][i];
   });
-
   let i = 0;
   const tick = () => {
     if (i < labels.length) {
@@ -1357,15 +1274,9 @@ function runConnectingAnimation() {
       steps[i].querySelector('.step-icon').textContent = ic;
       steps[i].querySelector('.step-label').textContent = lb;
       steps[i].querySelector('.step-sub').textContent = sb;
-      if (i + 1 < labels.length) {
-        steps[i+1].querySelector('.step-icon').className = 'step-icon doing';
-        steps[i+1].querySelector('.step-icon').textContent = '🔵';
-      }
-      i++;
-      setTimeout(tick, 900);
-    } else {
-      setTimeout(activateSession, 500);
-    }
+      if (i + 1 < labels.length) { steps[i+1].querySelector('.step-icon').className = 'step-icon doing'; steps[i+1].querySelector('.step-icon').textContent = '🔵'; }
+      i++; setTimeout(tick, 900);
+    } else { setTimeout(activateSession, 500); }
   };
   setTimeout(tick, 600);
 }
@@ -1377,16 +1288,13 @@ function activateSession() {
   document.getElementById('sessCredits').textContent = 'R$ ' + initialBalance.toFixed(2);
   document.getElementById('creditBar').style.width = '100%';
   goTo('screen-session');
-
   const speed = parseFloat(currentHost.speed) || 10;
   const pricePerSec = (currentHost.priceNum || 0.08) / 60;
-
   sessionTimer = setInterval(() => {
     sessionSeconds++;
     const m = Math.floor(sessionSeconds/60).toString().padStart(2,'0');
     const s = (sessionSeconds%60).toString().padStart(2,'0');
     document.getElementById('sessTimer').textContent = m + ':' + s;
-
     const spd = +(speed * (0.4 + Math.random() * 0.6)).toFixed(1);
     document.getElementById('sessDown').innerHTML = spd + '<span class="stat-unit"> MB/s</span>';
     sessionMB += spd * 0.2;
@@ -1394,12 +1302,10 @@ function activateSession() {
     const pct = Math.min(100, spd / speed * 100);
     document.getElementById('speedBar').style.width = pct + '%';
     document.getElementById('speedPct').textContent = Math.round(pct) + '%';
-
     const spent = sessionSeconds * pricePerSec;
     const remaining = Math.max(0, initialBalance - spent);
     document.getElementById('sessCredits').textContent = 'R$ ' + remaining.toFixed(2);
     document.getElementById('creditBar').style.width = (remaining / initialBalance * 100) + '%';
-
     if (remaining <= 0) endSession();
   }, 200);
 }
@@ -1407,20 +1313,17 @@ function activateSession() {
 async function endSession() {
   clearInterval(sessionTimer);
   const cost = sessionSeconds * ((currentHost?.priceNum ?? 0.08) / 60);
-
   if (currentSessionId && currentSessionId !== 'demo') {
     try {
       const res = await api('PUT', `/sessions/${currentSessionId}/end`, { seconds: sessionSeconds, mb_used: sessionMB });
       if (currentUser) currentUser.balance = res.new_balance;
     } catch {}
   }
-
   showToast(`✅ Sessão encerrada · R$ ${cost.toFixed(2)} debitados`);
   currentSessionId = null;
   setTimeout(() => navTo('screen-discover'), 300);
 }
 
-// ── HOST MODE ─────────────────────────────────────────────────────────────────
 async function toggleHost() {
   hostOn = !hostOn;
   const track = document.getElementById('toggleTrack');
@@ -1429,17 +1332,11 @@ async function toggleHost() {
   const lbl   = document.getElementById('hostToggleLabel');
   const sub   = document.getElementById('hostToggleSub');
   const actSess = document.getElementById('hostActiveSessions');
-
-  try {
-    await api('POST', '/host/toggle', { active: hostOn });
-    if (currentUser) currentUser.is_host = hostOn ? 1 : 0;
-  } catch { /* offline — still update UI */ }
-
+  try { await api('POST', '/host/toggle', { active: hostOn }); if (currentUser) currentUser.is_host = hostOn ? 1 : 0; } catch {}
   if (hostOn) {
     track.classList.add('on'); knob.classList.add('on');
     pill.className = 'pill green'; pill.innerHTML = '● Online';
-    lbl.textContent = 'Modo host ativo';
-    sub.textContent = 'Você aparece para usuários próximos';
+    lbl.textContent = 'Modo host ativo'; sub.textContent = 'Você aparece para usuários próximos';
     showToast('📡 Modo host ativado — você está visível!');
     hostEarnInterval = setInterval(() => {
       const earn = parseFloat(document.getElementById('hostEarnings').textContent.replace(',','.') || '0') + 0.004;
@@ -1448,10 +1345,8 @@ async function toggleHost() {
   } else {
     track.classList.remove('on'); knob.classList.remove('on');
     pill.className = 'pill blue'; pill.innerHTML = '● Offline';
-    lbl.textContent = 'Modo host desligado';
-    sub.textContent = 'Ligue para começar a ganhar';
-    actSess.style.display = 'none';
-    clearInterval(hostEarnInterval);
+    lbl.textContent = 'Modo host desligado'; sub.textContent = 'Ligue para começar a ganhar';
+    actSess.style.display = 'none'; clearInterval(hostEarnInterval);
     showToast('🔴 Modo host desativado');
   }
 }
@@ -1484,7 +1379,6 @@ async function loadHostStats() {
   } catch {}
 }
 
-// ── WALLET ────────────────────────────────────────────────────────────────────
 async function loadWallet() {
   try {
     const { balance, transactions } = await api('GET', '/wallet');
@@ -1501,29 +1395,19 @@ async function loadWallet() {
 
 function renderTransactions(txs) {
   const list = document.getElementById('txList');
-  if (!txs.length) {
-    list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">Nenhuma transação ainda</div>';
-    return;
-  }
+  if (!txs.length) { list.innerHTML = '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px">Nenhuma transação ainda</div>'; return; }
   list.innerHTML = txs.map(tx => {
     const icon = tx.type === 'debit'
-      ? `<div class="tx-icon" style="background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center">${pinSVG('#EF4444',18)}</div>`
-      : `<div class="tx-icon" style="background:rgba(34,197,94,0.1)">💳</div>`;
-    const sign  = tx.type === 'debit' ? '−' : '+';
-    const cls   = tx.type === 'debit' ? 'debit' : 'credit';
-    const date  = new Date(tx.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
-    return `<div class="tx-item">
-      ${icon}
-      <div class="tx-info"><div class="tx-name">${tx.description}</div><div class="tx-date">${date}</div></div>
-      <div class="tx-amount ${cls}">${sign}R$ ${tx.amount.toFixed(2).replace('.',',')}</div>
-    </div>`;
+      ? `<div class="tx-icon" style="background:rgba(220,38,38,0.1)">${pinSVG('#DC2626',18)}</div>`
+      : `<div class="tx-icon" style="background:rgba(22,163,74,0.1)">💳</div>`;
+    const sign = tx.type === 'debit' ? '−' : '+';
+    const cls  = tx.type === 'debit' ? 'debit' : 'credit';
+    const date = new Date(tx.created_at).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    return `<div class="tx-item">${icon}<div class="tx-info"><div class="tx-name">${tx.description}</div><div class="tx-date">${date}</div></div><div class="tx-amount ${cls}">${sign}R$ ${tx.amount.toFixed(2).replace('.',',')}</div></div>`;
   }).join('');
 }
 
-// ── DEPOSIT ───────────────────────────────────────────────────────────────────
-function openDepositModal() {
-  document.getElementById('modalDeposit').classList.add('open');
-}
+function openDepositModal() { document.getElementById('modalDeposit').classList.add('open'); }
 
 function selectAmount(el, val) {
   document.querySelectorAll('.amount-chip').forEach(c => c.classList.remove('selected'));
@@ -1548,68 +1432,50 @@ async function doDeposit() {
     closeModal('modalDeposit');
     showToast(`✅ R$ ${selectedDepAmount.toFixed(2).replace('.',',')} adicionados via ${selectedDepMethod}`);
     loadWallet();
-  } catch (e) {
-    showToast('❌ ' + e.message);
-  } finally {
+  } catch (e) { showToast('❌ ' + e.message); }
+  finally {
     btn.disabled = false;
     btn.innerHTML = 'Pagar R$ <span id="depositAmtLabel">' + selectedDepAmount.toFixed(2).replace('.',',') + '</span>';
   }
 }
 
-// ── PORTAL CATIVO ─────────────────────────────────────────────────────────────
-function selectPlan(el, price) {
-  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-}
+function selectPlan(el, price) { document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); }
+function selectPayMethod(method) { ['pay-apple','pay-google','pay-pix'].forEach(id => document.getElementById(id).classList.remove('selected')); document.getElementById('pay-' + method).classList.add('selected'); }
+function portalConnect() { showToast('⚡ Conectado! Internet liberada por 30 minutos.'); setTimeout(() => navTo('screen-discover'), 1200); }
 
-function selectPayMethod(method) {
-  ['pay-apple','pay-google','pay-pix'].forEach(id => document.getElementById(id).classList.remove('selected'));
-  document.getElementById('pay-' + method).classList.add('selected');
-}
-
-function portalConnect() {
-  showToast('⚡ Conectado! Internet liberada por 30 minutos.');
-  setTimeout(() => navTo('screen-discover'), 1200);
-}
-
-// ── TOAST ─────────────────────────────────────────────────────────────────────
 let toastTimer;
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
 
-// ── ANIMATIONS ────────────────────────────────────────────────────────────────
 function initSplashCanvas() {
   const canvas = document.getElementById('splashCanvas');
   const dpr = window.devicePixelRatio || 1;
   canvas.width  = canvas.offsetWidth  * dpr;
   canvas.height = canvas.offsetHeight * dpr;
   const ctx = canvas.getContext('2d');
-  let t = 0;
-
   const stars = Array.from({length:80},(_,i)=>({
     x:(Math.sin(i*2.4)*0.5+0.5), y:(Math.cos(i*1.618)*0.5+0.5),
     r:0.4+(i%4)*0.3, pulse:Math.random()*Math.PI*2, speed:0.004+Math.random()*0.006,
   }));
-
-  function draw(ts) {
-    t = ts;
+  function draw() {
     const W = canvas.width, H = canvas.height;
     ctx.clearRect(0,0,W,H);
     stars.forEach(s => {
       s.pulse += s.speed;
       const bright = 0.2 + Math.sin(s.pulse)*0.2;
       const sx = s.x*W, sy = s.y*H;
-      const g = ctx.createRadialGradient(sx,sy,0,sx,sy,s.r*5*dpr);
-      g.addColorStop(0, `rgba(96,165,250,${bright*0.5})`);
-      g.addColorStop(1, 'rgba(96,165,250,0)');
-      ctx.beginPath(); ctx.arc(sx,sy,s.r*5*dpr,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
+      const colors = ['99,102,241','139,92,246','20,184,166','251,146,60','236,72,153'];
+      const c = colors[Math.floor(s.x*5)%colors.length];
+      const g = ctx.createRadialGradient(sx,sy,0,sx,sy,s.r*7*dpr);
+      g.addColorStop(0, `rgba(${c},${bright*0.6})`);
+      g.addColorStop(1, `rgba(${c},0)`);
+      ctx.beginPath(); ctx.arc(sx,sy,s.r*7*dpr,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
       ctx.beginPath(); ctx.arc(sx,sy,s.r*dpr,0,Math.PI*2);
-      ctx.fillStyle=`rgba(186,230,253,${bright+0.15})`; ctx.fill();
+      ctx.fillStyle=`rgba(${c},${bright+0.3})`; ctx.fill();
     });
     requestAnimationFrame(draw);
   }
@@ -1632,7 +1498,6 @@ function initBg() {
   const dpr = window.devicePixelRatio || 1;
   canvas.width = 240*dpr; canvas.height = 240*dpr;
   const ctx = canvas.getContext('2d');
-
   function draw() {
     const W=canvas.width, H=canvas.height;
     ctx.clearRect(0,0,W,H);
@@ -1640,17 +1505,19 @@ function initBg() {
       const a=STARS_BG[i], b=STARS_BG[j];
       const op=(0.18-d)/0.18*0.25;
       ctx.beginPath(); ctx.moveTo(a.x*W,a.y*H); ctx.lineTo(b.x*W,b.y*H);
-      ctx.strokeStyle=`rgba(96,165,250,${op})`; ctx.lineWidth=0.6; ctx.stroke();
+      ctx.strokeStyle=`rgba(99,102,241,${op*0.5})`; ctx.lineWidth=0.5; ctx.stroke();
     });
     STARS_BG.forEach(s => {
       s.pulse+=s.speed;
-      const bright=0.3+Math.sin(s.pulse)*0.25;
+      const bright=0.2+Math.sin(s.pulse)*0.15;
       const sx=s.x*W, sy=s.y*H;
+      const cols=['99,102,241','139,92,246','20,184,166'];
+      const c=cols[Math.floor(s.x*3)%3];
       const g=ctx.createRadialGradient(sx,sy,0,sx,sy,s.r*4*dpr);
-      g.addColorStop(0,`rgba(96,165,250,${bright*0.6})`); g.addColorStop(1,'rgba(96,165,250,0)');
+      g.addColorStop(0,`rgba(${c},${bright*0.7})`); g.addColorStop(1,`rgba(${c},0)`);
       ctx.beginPath(); ctx.arc(sx,sy,s.r*4*dpr,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
       ctx.beginPath(); ctx.arc(sx,sy,s.r*dpr,0,Math.PI*2);
-      ctx.fillStyle=`rgba(186,230,253,${bright+0.2})`; ctx.fill();
+      ctx.fillStyle=`rgba(${c},${bright+0.25})`; ctx.fill();
     });
     requestAnimationFrame(draw);
   }
@@ -1666,40 +1533,26 @@ function createGlobe(containerId) {
   document.getElementById(containerId).appendChild(canvas);
   const ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr);
   const cx=size/2, cy=size/2, r=size/2-2;
-  const LAND=[
-    [[65,-140],[70,-130],[72,-120],[68,-100],[60,-90],[55,-85],[50,-80],[45,-76],[35,-76],[25,-80],[20,-87],[15,-88],[10,-83],[8,-77],[10,-75],[20,-70],[30,-65],[40,-66],[45,-62],[50,-56],[55,-50],[60,-45],[65,-45],[68,-52],[70,-60],[72,-70],[70,-80],[68,-90],[68,-100],[70,-110],[68,-120],[65,-130],[65,-140]],
-    [[60,-44],[62,-38],[66,-35],[72,-24],[76,-20],[80,-25],[82,-34],[82,-44],[80,-54],[76,-58],[70,-54],[64,-50],[60,-44]],
-    [[10,-62],[8,-60],[5,-52],[0,-50],[-5,-35],[-10,-37],[-15,-39],[-20,-40],[-25,-48],[-30,-51],[-35,-57],[-40,-62],[-45,-65],[-50,-68],[-55,-68],[-54,-64],[-52,-58],[-45,-52],[-40,-50],[-35,-48],[-30,-50],[-25,-48],[-20,-44],[-15,-40],[-10,-38],[-5,-35],[0,-48],[5,-52],[10,-62]],
-    [[36,0],[36,5],[38,10],[40,16],[38,22],[40,26],[42,28],[44,28],[46,30],[48,38],[50,36],[52,30],[54,24],[56,20],[58,12],[60,5],[58,5],[56,8],[54,10],[52,5],[50,2],[48,2],[46,0],[44,0],[40,0],[36,0]],
-    [[36,0],[36,10],[32,32],[28,34],[24,37],[20,40],[15,42],[10,42],[5,40],[0,42],[-5,40],[-10,38],[-15,36],[-20,34],[-25,32],[-30,30],[-34,26],[-34,18],[-30,16],[-25,14],[-20,12],[-15,12],[-10,14],[-5,10],[0,8],[5,2],[10,-2],[14,-2],[18,12],[22,14],[26,14],[30,20],[32,26],[34,28],[36,0]],
-    [[70,30],[72,40],[70,60],[68,80],[66,100],[64,120],[62,140],[60,140],[56,130],[50,120],[44,130],[38,140],[36,130],[32,120],[28,118],[24,116],[22,114],[20,110],[18,104],[14,100],[10,98],[6,100],[4,104],[0,104],[0,110],[6,116],[10,120],[14,124],[20,120],[26,118],[30,120],[36,128],[40,130],[44,132],[50,136],[54,138],[58,140],[62,142],[60,140],[56,136],[50,128],[44,128],[40,120],[36,112],[32,104],[28,98],[24,92],[20,88],[16,82],[12,78],[8,78],[4,76],[0,72],[4,66],[8,62],[12,58],[16,54],[20,52],[24,50],[28,48],[32,44],[36,38],[40,34],[44,30],[48,28],[52,28],[56,26],[60,22],[64,18],[68,22],[70,30]],
-    [[-16,136],[-18,130],[-20,118],[-22,114],[-26,114],[-30,114],[-34,118],[-38,140],[-38,146],[-36,150],[-32,152],[-28,154],[-22,152],[-18,148],[-14,144],[-12,136],[-14,130],[-16,136]],
-  ];
+  const LAND=[[[65,-140],[70,-130],[72,-120],[68,-100],[60,-90],[55,-85],[50,-80],[45,-76],[35,-76],[25,-80],[20,-87],[15,-88],[10,-83],[8,-77],[10,-75],[20,-70],[30,-65],[40,-66],[45,-62],[50,-56],[55,-50],[60,-45],[65,-45],[68,-52],[70,-60],[72,-70],[70,-80],[68,-90],[68,-100],[70,-110],[68,-120],[65,-130],[65,-140]],[[60,-44],[62,-38],[66,-35],[72,-24],[76,-20],[80,-25],[82,-34],[82,-44],[80,-54],[76,-58],[70,-54],[64,-50],[60,-44]],[[10,-62],[8,-60],[5,-52],[0,-50],[-5,-35],[-10,-37],[-15,-39],[-20,-40],[-25,-48],[-30,-51],[-35,-57],[-40,-62],[-45,-65],[-50,-68],[-55,-68],[-54,-64],[-52,-58],[-45,-52],[-40,-50],[-35,-48],[-30,-50],[-25,-48],[-20,-44],[-15,-40],[-10,-38],[-5,-35],[0,-48],[5,-52],[10,-62]],[[36,0],[36,5],[38,10],[40,16],[38,22],[40,26],[42,28],[44,28],[46,30],[48,38],[50,36],[52,30],[54,24],[56,20],[58,12],[60,5],[58,5],[56,8],[54,10],[52,5],[50,2],[48,2],[46,0],[44,0],[40,0],[36,0]],[[36,0],[36,10],[32,32],[28,34],[24,37],[20,40],[15,42],[10,42],[5,40],[0,42],[-5,40],[-10,38],[-15,36],[-20,34],[-25,32],[-30,30],[-34,26],[-34,18],[-30,16],[-25,14],[-20,12],[-15,12],[-10,14],[-5,10],[0,8],[5,2],[10,-2],[14,-2],[18,12],[22,14],[26,14],[30,20],[32,26],[34,28],[36,0]],[[70,30],[72,40],[70,60],[68,80],[66,100],[64,120],[62,140],[60,140],[56,130],[50,120],[44,130],[38,140],[36,130],[32,120],[28,118],[24,116],[22,114],[20,110],[18,104],[14,100],[10,98],[6,100],[4,104],[0,104],[0,110],[6,116],[10,120],[14,124],[20,120],[26,118],[30,120],[36,128],[40,130],[44,132],[50,136],[54,138],[58,140],[62,142],[60,140],[56,136],[50,128],[44,128],[40,120],[36,112],[32,104],[28,98],[24,92],[20,88],[16,82],[12,78],[8,78],[4,76],[0,72],[4,66],[8,62],[12,58],[16,54],[20,52],[24,50],[28,48],[32,44],[36,38],[40,34],[44,30],[48,28],[52,28],[56,26],[60,22],[64,18],[68,22],[70,30]],[[-16,136],[-18,130],[-20,118],[-22,114],[-26,114],[-30,114],[-34,118],[-38,140],[-38,146],[-36,150],[-32,152],[-28,154],[-22,152],[-18,148],[-14,144],[-12,136],[-14,130],[-16,136]]];
   let angle=0;
-  function project(lat,lon,rot){
-    const phi=(lat*Math.PI)/180, lam=((lon+rot)*Math.PI)/180;
-    const x3=Math.cos(phi)*Math.sin(lam), y3=Math.sin(phi), z3=Math.cos(phi)*Math.cos(lam);
-    if(z3<0)return null;
-    return{x:cx+x3*r, y:cy-y3*r};
-  }
+  function project(lat,lon,rot){const phi=(lat*Math.PI)/180,lam=((lon+rot)*Math.PI)/180;const x3=Math.cos(phi)*Math.sin(lam),y3=Math.sin(phi),z3=Math.cos(phi)*Math.cos(lam);if(z3<0)return null;return{x:cx+x3*r,y:cy-y3*r};}
   function frame(){
     ctx.clearRect(0,0,size,size);
     const g=ctx.createRadialGradient(cx-r*0.3,cy-r*0.3,0,cx,cy,r);
-    g.addColorStop(0,'#60A5FA'); g.addColorStop(0.6,'#2563EB'); g.addColorStop(1,'#1E40AF');
+    g.addColorStop(0,'#818CF8'); g.addColorStop(0.6,'#6366F1'); g.addColorStop(1,'#4338CA');
     ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle=g; ctx.fill();
-    ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=0.4;
+    ctx.strokeStyle='rgba(255,255,255,0.15)'; ctx.lineWidth=0.4;
     for(let lat=-60;lat<=60;lat+=30){ctx.beginPath();let f=true;for(let lon=-180;lon<=180;lon+=3){const p=project(lat,lon,angle);if(!p){f=true;continue;}if(f){ctx.moveTo(p.x,p.y);f=false;}else ctx.lineTo(p.x,p.y);}ctx.stroke();}
-    ctx.fillStyle='rgba(255,255,255,0.22)'; ctx.strokeStyle='rgba(255,255,255,0.35)'; ctx.lineWidth=0.5;
+    ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.strokeStyle='rgba(255,255,255,0.4)'; ctx.lineWidth=0.5;
     LAND.forEach(poly=>{const pts=poly.map(([la,lo])=>project(la,lo,angle)).filter(Boolean);if(pts.length<3)return;ctx.beginPath();ctx.moveTo(pts[0].x,pts[0].y);pts.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.closePath();ctx.fill();ctx.stroke();});
     const sh=ctx.createRadialGradient(cx-r*0.35,cy-r*0.35,0,cx-r*0.2,cy-r*0.2,r*0.6);
-    sh.addColorStop(0,'rgba(255,255,255,0.22)'); sh.addColorStop(1,'rgba(255,255,255,0)');
+    sh.addColorStop(0,'rgba(255,255,255,0.25)'); sh.addColorStop(1,'rgba(255,255,255,0)');
     ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fillStyle=sh; ctx.fill();
     angle+=0.25; requestAnimationFrame(frame);
   }
   frame();
 }
 
-// ── PWA ───────────────────────────────────────────────────────────────────────
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
 }
@@ -1707,7 +1560,7 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('beforeinstallprompt', e => {
   e.preventDefault();
   deferredInstallPrompt = e;
-  if (!localStorage.getItem('wifime_install_dismissed')) {
+  if (!localStorage.getItem('hubi_install_dismissed')) {
     setTimeout(() => document.getElementById('installBanner').classList.add('show'), 3000);
   }
 });
@@ -1716,17 +1569,15 @@ async function installPWA() {
   if (!deferredInstallPrompt) return;
   deferredInstallPrompt.prompt();
   const { outcome } = await deferredInstallPrompt.userChoice;
-  deferredInstallPrompt = null;
-  dismissInstall();
-  if (outcome === 'accepted') showToast('🎉 WifiMe instalado com sucesso!');
+  deferredInstallPrompt = null; dismissInstall();
+  if (outcome === 'accepted') showToast('🎉 HUBI instalado com sucesso!');
 }
 
 function dismissInstall() {
   document.getElementById('installBanner').classList.remove('show');
-  localStorage.setItem('wifime_install_dismissed', '1');
+  localStorage.setItem('hubi_install_dismissed', '1');
 }
 
-// ── BOOT ──────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   initBg();
   createGlobe('radarGlobe');
